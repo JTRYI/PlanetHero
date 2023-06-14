@@ -12,6 +12,9 @@ Color background =
     Color(int.parse(hexColor.substring(1, 7), radix: 16) + 0xFF000000);
 
 class LoginSignupScreen extends StatefulWidget {
+  //declare route name
+  static String routeName = '/login-signup-screen';
+
   @override
   State<LoginSignupScreen> createState() => _LoginSignupScreenState();
 }
@@ -53,7 +56,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       usersList.registerUser(
           username, email, password, actionsCompleted, heroPoints);
 
-      usersList.printUsers();
+      // code below to check if user got added into the list
+      //usersList.printUsers();
+
       //reset the form
       formKey.currentState!.reset();
       //show a snackbar of user registered successfully
@@ -73,7 +78,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       debugPrint(loginEmail);
       debugPrint(loginPassword);
 
-      usersList.loginUser(loginEmail, loginPassword);
+      //loginUser function in AllUsers provider, checks if the email and password user keyed matches any in the user lists.
+      usersList.loginUser(loginEmail, loginPassword, context);
 
       formLoginKey.currentState!.reset();
     }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:planethero_application/main.dart';
 
 import '../models/User.dart';
 
 class AllUsers with ChangeNotifier {
   //create list to store users
   List<User> allUsers = [];
+
+  //Store the logged in user
+  User? loggedInUser;
 
   //function to get all users
   List<User> getUsers() {
@@ -38,13 +42,14 @@ class AllUsers with ChangeNotifier {
     notifyListeners();
   }
 
-  void loginUser(loggedEmail, loggedPassword) {
+  void loginUser(loggedEmail, loggedPassword, BuildContext context) {
     //check if the provided email and password match a registered user
     bool isUserFound = false;
 
     for (User user in allUsers) {
       if (user.email == loggedEmail && user.password == loggedPassword) {
         isUserFound = true;
+        loggedInUser = user; //set the logged-in user
         //break from the for loop
         break;
       }
@@ -52,10 +57,28 @@ class AllUsers with ChangeNotifier {
 
     // if true, user is found or all credentials are keyed correctly
     if (isUserFound) {
+      Navigator.of(context).pushNamed(MainScreen.routeName);
       debugPrint('Login Successful!');
     } else {
       // User is not found or credentials are not correct
       debugPrint('Login Failed!');
     }
+  }
+
+  int getLoggedInUserRanking() {
+    //create a copy of the allUsers list
+    List<User> sortedUsers = List.from(allUsers);
+
+    //sort the list based on hero points in descending order
+    sortedUsers.sort((a, b) => b.heroPoints.compareTo(a.heroPoints));
+
+    //find index of logged-in user
+    int loggedInUserIndex =
+        sortedUsers.indexWhere((user) => user == loggedInUser);
+
+    //Add 1 to the index to get ranking since lists start with index 0 and not 1
+    int ranking = loggedInUserIndex + 1;
+
+    return ranking;
   }
 }
