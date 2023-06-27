@@ -66,6 +66,8 @@ flutter:
     - images/Actions.png
     - images/Hero.png
     - images/leaderboard.png
+    - images/browse-actions-img.jpg
+    - images/library.jpg
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -93,6 +95,15 @@ flutter:
     - family: Times New Roman
       fonts:
         - asset: fonts/Times New Roman Font.ttf
+
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+
+    - family: Roboto Bold
+      fonts:
+        - asset: fonts/Roboto-Bold.ttf
+        
 
     
   #

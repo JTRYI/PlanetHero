@@ -6,9 +6,10 @@ import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/settings_screen.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
-  //variable that will be passed into the parameter of the Bottom Nav Bar
+  // Variable that will be passed into the parameter of the Bottom Nav Bar
   final int initialIndex;
-  //constructor for Bottom Nav Bar
+
+  // Constructor for Bottom Nav Bar
   const CustomBottomNavigationBar({required this.initialIndex});
 
   @override
@@ -24,6 +25,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       _currentIndex = index;
     });
 
+    // Navigate to the respective screen based on the selected index
     switch (index) {
       case 0:
         Navigator.of(context)
@@ -58,9 +60,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     _currentIndex = widget.initialIndex;
   }
 
+  @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      // makes all items in the bottom nav bar stay in the same position
+      // Makes all items in the bottom nav bar stay in the same position
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.greenAccent.shade400,
       onTap: _onItemTapped,

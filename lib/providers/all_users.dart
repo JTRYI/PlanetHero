@@ -62,6 +62,10 @@ class AllUsers with ChangeNotifier {
     } else {
       // User is not found or credentials are not correct
       debugPrint('Login Failed!');
+      //show a snackbar of failed authentication
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please enter a valid email address and password!'),
+      ));
     }
   }
 
