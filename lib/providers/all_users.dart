@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/main.dart';
+import 'package:planethero_application/screens/parent_screen.dart';
 
 import '../models/user.dart';
 
@@ -57,7 +58,8 @@ class AllUsers with ChangeNotifier {
 
     // if true, user is found or all credentials are keyed correctly
     if (isUserFound) {
-      Navigator.of(context).pushNamed(MainScreen.routeName);
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => ParentScreen()));
       debugPrint('Login Successful!');
     } else {
       // User is not found or credentials are not correct

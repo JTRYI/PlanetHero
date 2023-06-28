@@ -5,7 +5,6 @@ import 'package:planethero_application/screens/bookmarks_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
 import 'package:planethero_application/screens/settings_screen.dart';
-import 'package:planethero_application/widgets/bottom-navbar.dart';
 import 'package:planethero_application/widgets/user-stats.dart';
 import 'package:provider/provider.dart';
 
@@ -62,18 +61,11 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //for bottom nav bar
-    final int initialIndex =
-        ModalRoute.of(context)?.settings.arguments as int? ?? 0;
-
     //declare the provider
     AllUsers usersList = Provider.of<AllUsers>(context);
 
     return Scaffold(
         backgroundColor: background,
-        bottomNavigationBar: CustomBottomNavigationBar(
-          initialIndex: initialIndex,
-        ),
         body: SingleChildScrollView(
           child: Stack(
             children: [
