@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/main.dart';
 
-import '../models/User.dart';
+import '../models/user.dart';
 
 class AllUsers with ChangeNotifier {
   //create list to store users
