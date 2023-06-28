@@ -120,143 +120,156 @@ class MainScreen extends StatelessWidget {
                       ),
                       SizedBox(
                           height:
-                              20), // add 20 px of space between the users name and the box below
-                      UserStats(), // user statistics widget
-                      SizedBox(
-                        //Leave 20 px of space between the stats and 'Browse Actions' Text
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 230), //Shift text 230px from the right
-                        child: Text(
-                          "Browse Actions",
-                          style: TextStyle(
-                            fontFamily: 'Roboto Bold',
-                            fontSize: 20,
-                            color: Colors.black,
+                              40), // add 40 px of space between the users name and the box below
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          UserStats(), // user statistics widget
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        //Leave 15 px of space between the stats and 'Browse Actions' Text
-                        height: 15,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 100,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                              15), // Rounded corners for the container
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black
-                                  .withOpacity(0.1), //Shadow color with opacity
-                              blurRadius: 20, //Amount of blur for the shadow
-                              spreadRadius: 5,
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              "Browse Actions",
+                              style: TextStyle(
+                                fontFamily: 'Roboto Bold',
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
                             ),
-                          ],
-                        ),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            ClipRRect(
+                          ),
+
+                          SizedBox(
+                            //Leave 15 px of space between the stats and 'Browse Actions' Text
+                            height: 15,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width -
+                                70, //Gets the size of the screen and minus 70
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                  15), // Rounded corners for the container
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(
+                                      0.1), //Shadow color with opacity
+                                  blurRadius:
+                                      20, //Amount of blur for the shadow
+                                  spreadRadius: 5,
+                                ),
+                              ],
+                            ),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      15), // Rounded corners for the image
+                                  child: Image.asset(
+                                    'images/browse-actions-img.jpg',
+                                    fit: BoxFit
+                                        .cover, // Scale the image to cover the entire container
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 30,
+                                      left:
+                                          15), //Move text 30px from top of container and 15px from left
+                                  child: Text(
+                                    'Start Now!',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto Bold'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ), // Space between Actions container and Bookmarks Text
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              "Bookmarks",
+                              style: TextStyle(
+                                fontFamily: 'Roboto Bold',
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            //Leave 15 px of space between the Text and Library Image
+                            height: 15,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 70,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                  15), // Rounded corners for the container
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(
+                                      0.1), //Shadow color with opacity
+                                  blurRadius:
+                                      20, //Amount of blur for the shadow
+                                  spreadRadius: 5,
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(
                                   15), // Rounded corners for the image
                               child: Image.asset(
-                                'images/browse-actions-img.jpg',
+                                'images/library.jpg',
                                 fit: BoxFit
                                     .cover, // Scale the image to cover the entire container
                               ),
                             ),
-                            Center(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 35,
-                                        right:
-                                            270), //35 px from the top of container and 270px from the right
-                                    child: Text(
-                                      'All Actions',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                        fontFamily: 'Roboto Bold',
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    //Space between the two texts
-                                    height: 5,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 30,
-                                        right:
-                                            182), //Moving text 182px from the right and 30 px to the bottom from the text above
-                                    child: Text(
-                                      'Start small to make a big impact!',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontFamily: 'Roboto'),
-                                    ),
-                                  ) // 5px of space between texts
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: 20,
-                      ), // Space between Actions container and Bookmarks Text
-
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 265), //Shift text 230px from the right
-                        child: Text(
-                          "Bookmarks",
-                          style: TextStyle(
-                            fontFamily: 'Roboto Bold',
-                            fontSize: 20,
-                            color: Colors.black,
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        //Leave 15 px of space between the Text and Library Image
-                        height: 15,
-                      ),
-
-                      Container(
-                        width: MediaQuery.of(context).size.width - 100,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                              15), // Rounded corners for the container
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black
-                                  .withOpacity(0.1), //Shadow color with opacity
-                              blurRadius: 20, //Amount of blur for the shadow
-                              spreadRadius: 5,
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 70,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(
+                                      0.1), //Shadow color with opacity
+                                  blurRadius:
+                                      20, //Amount of blur for the shadow
+                                  spreadRadius: 5,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              15), // Rounded corners for the image
-                          child: Image.asset(
-                            'images/library.jpg',
-                            fit: BoxFit
-                                .cover, // Scale the image to cover the entire container
+                            child: Padding(
+                              padding: EdgeInsets.all(33),
+                              child: Text(
+                                "'Don't Just Think, You Have To Take Action!'",
+                                style: TextStyle(
+                                    fontFamily: 'Roboto Bold',
+                                    fontSize: 25,
+                                    color: Colors.black,
+                                    fontStyle: FontStyle.italic),
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 20,
+                          ) //Leave 20px of spacing from navbar
+                        ],
                       ),
                     ],
                   ),

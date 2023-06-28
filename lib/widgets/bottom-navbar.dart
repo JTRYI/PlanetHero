@@ -70,6 +70,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       currentIndex: _currentIndex,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.black,
+      selectedLabelStyle: TextStyle(
+          fontSize: 12), // Set the font size to 12 for selected labels
+      unselectedLabelStyle: TextStyle(
+          fontSize: 12), // Set the font size to 12 for unselected labels
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),

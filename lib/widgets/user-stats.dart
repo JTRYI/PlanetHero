@@ -17,7 +17,8 @@ class _UserStatsState extends State<UserStats> {
     //Get logged-in user ranking
     int loggedInUserRanking = usersList.getLoggedInUserRanking();
     return Container(
-      width: MediaQuery.of(context).size.width - 100,
+      width: MediaQuery.of(context).size.width -
+          70, //Gets the size of the screen and minus 70
       height: 225,
       decoration: BoxDecoration(
         color: Colors.white, //Background colour of container
@@ -47,16 +48,19 @@ class _UserStatsState extends State<UserStats> {
                       fontFamily: 'Roboto', fontSize: 15, color: Colors.black),
                 ),
               ),
-              SizedBox(
-                  width:
-                      125), //125px of space between the previous text and next text
-              Text(
-                '${usersList.loggedInUser?.actionsCompleted}',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Spacer(), //pushes the Text below all the way to the right of the container
+              Padding(
+                padding: EdgeInsets.only(
+                    right:
+                        30), //leaving a 30px gap between the text and the right of the container
+                child: Text(
+                  '${usersList.loggedInUser?.actionsCompleted}',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
               )
             ],
@@ -73,16 +77,19 @@ class _UserStatsState extends State<UserStats> {
                       fontFamily: 'Roboto', fontSize: 15, color: Colors.black),
                 ),
               ),
-              SizedBox(
-                width: 175,
-              ),
-              Text(
-                "${usersList.loggedInUser?.heroPoints}",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Spacer(), //pushes the Text below all the way to the right of the container
+              Padding(
+                padding: EdgeInsets.only(
+                    right:
+                        30), //leaving a 30px gap between the text and the right of the container
+                child: Text(
+                  "${usersList.loggedInUser?.heroPoints}",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
               )
             ],
@@ -101,16 +108,19 @@ class _UserStatsState extends State<UserStats> {
                       fontFamily: 'Roboto', fontSize: 15, color: Colors.black),
                 ),
               ),
-              SizedBox(
-                width: 200,
-              ),
-              Text(
-                loggedInUserRanking.toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Spacer(), //pushes the Text below all the way to the right of the container
+              Padding(
+                padding: EdgeInsets.only(
+                    right:
+                        30), //leaving a 30px gap between the text and the right of the container
+                child: Text(
+                  loggedInUserRanking.toString(),
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
               )
             ],
