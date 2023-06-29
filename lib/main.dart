@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:planethero_application/providers/all_actions.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/actions_screen.dart';
 import 'package:planethero_application/screens/bookmarks_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
+import 'package:planethero_application/screens/parent_screen.dart';
 import 'package:planethero_application/screens/settings_screen.dart';
 import 'package:planethero_application/widgets/user-stats.dart';
 import 'package:provider/provider.dart';
@@ -23,13 +25,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<AllUsers>(
           create: (ctx) => AllUsers(),
         ),
+        ChangeNotifierProvider<AllActions>(
+          create: (ctx) => AllActions(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: LoginSignupScreen(),
+        home: ParentScreen(),
         routes: {
           MainScreen.routeName: (_) {
             return MainScreen();

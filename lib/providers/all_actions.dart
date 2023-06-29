@@ -30,7 +30,7 @@ class AllActions with ChangeNotifier {
         'Medium',
         '''First and foremost, line drying your clothes will save on energy! You probably already use the best detergent to wash your clothes, and as such you want your drying process to be equally eco-friendly. For many households, the clothes dryer is the second-most energy-consuming appliance, right after the refrigerator. However, by simply switching from using a clothes dryer to air-drying your clothes after washing them, you could reduce your home’s carbon footprint 2,400 pounds a year. '''),
     HeroAction(
-        'https://media1.thehungryjpeg.com/thumbs/800_4158661_n9w81qsikrkv9nprs5i9i0268wkb456eo2sr738u.jpg',
+        'https://images.pexels.com/photos/5970279/pexels-photo-5970279.jpeg?cs=srgb&dl=pexels-alexandre-saraiva-carniato-5970279.jpg&fm=jpg',
         'Cycle Instead of Taking Cars',
         100,
         'Hard',
