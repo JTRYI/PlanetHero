@@ -3,6 +3,7 @@ import 'package:planethero_application/providers/all_actions.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/actions_screen.dart';
 import 'package:planethero_application/screens/bookmarks_screen.dart';
+import 'package:planethero_application/screens/clicked_action_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
 import 'package:planethero_application/screens/parent_screen.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
           },
           SettingScreen.routeName: (_) {
             return SettingScreen();
+          },
+          ClickedAction.routeName: (_) {
+            return ClickedAction();
           }
         },
       ),
@@ -141,50 +145,57 @@ class MainScreen extends StatelessWidget {
                             //Leave 15 px of space between the stats and 'Browse Actions' Text
                             height: 15,
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width -
-                                70, //Gets the size of the screen and minus 70
-                            height: 150,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(
-                                  15), // Rounded corners for the container
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(
-                                      0.1), //Shadow color with opacity
-                                  blurRadius:
-                                      20, //Amount of blur for the shadow
-                                  spreadRadius: 5,
-                                ),
-                              ],
-                            ),
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      15), // Rounded corners for the image
-                                  child: Image.asset(
-                                    'images/browse-actions-img.jpg',
-                                    fit: BoxFit
-                                        .cover, // Scale the image to cover the entire container
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (_) => ActionScreen()));
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width -
+                                  70, //Gets the size of the screen and minus 70
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                    15), // Rounded corners for the container
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(
+                                        0.1), //Shadow color with opacity
+                                    blurRadius:
+                                        20, //Amount of blur for the shadow
+                                    spreadRadius: 5,
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 30,
-                                      left:
-                                          15), //Move text 30px from top of container and 15px from left
-                                  child: Text(
-                                    'Start Now!',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                        fontFamily: 'Roboto Bold'),
+                                ],
+                              ),
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        15), // Rounded corners for the image
+                                    child: Image.asset(
+                                      'images/browse-actions-img.jpg',
+                                      fit: BoxFit
+                                          .cover, // Scale the image to cover the entire container
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 30,
+                                        left:
+                                            15), //Move text 30px from top of container and 15px from left
+                                    child: Text(
+                                      'Start Now!',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                          fontFamily: 'Roboto Bold'),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(

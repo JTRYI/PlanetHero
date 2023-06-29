@@ -16,7 +16,7 @@ class ActionScreen extends StatelessWidget {
       backgroundColor: background,
       body: Padding(
         padding:
-            const EdgeInsets.only(top: 40, left: 35, right: 35, bottom: 30),
+            const EdgeInsets.only(top: 35, left: 35, right: 35, bottom: 30),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             //crossaxisalignment.start allows whatever items in

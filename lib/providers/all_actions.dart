@@ -11,18 +11,17 @@ class AllActions with ChangeNotifier {
         'Easy',
         '''Instead of buying or taking a single-use plastic bag when you go shopping, simply bring your own recycle bags!
 
-      Plastic bags are used for an average of 12 minutes
-      before ending up in the thrash and then it takes
-      hundreds of years to degrade in a landfill.
+Plastic bags are used for an average of 12 minutes before ending 
+up in the thrash and then it takes hundreds of years to degrade 
+in a landfill.
 
-      Oil, which is a fossil fuel and a non-renewable
-      resource, is used to make plastic bags. Because the
-      production of disposable plastic shopping bags also
-      releases greenhouse gases into the atmosphere,
-      reducing demand will result in less production, which
-      will free up more nonrenewable resources for use in
-      other ways and reduce the amount of greenhouse
-      gases released into the atmosphere.'''),
+Oil, which is a fossil fuel and a non-renewable resource, 
+is used to make plastic bags. Because the production of 
+disposable plastic shopping bags also releases greenhouse 
+gases into the atmosphere, reducing demand will result in 
+less production, which will free up more nonrenewable 
+resources for use in other ways and reduce the amount of 
+greenhouse gases released into the atmosphere.'''),
     HeroAction(
         'https://images.ctfassets.net/z3ixs6i8tjtq/1RK1N83Bd246C6q68gicUO/f970cf756bb0a3786a87b922f368762f/clothes-line-615962_640.jpg?q=90&fl=progressive&w=961&fit=fill',
         'Air-Dry Clothes After Washing',
