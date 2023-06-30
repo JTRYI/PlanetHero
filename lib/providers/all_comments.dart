@@ -41,4 +41,26 @@ class AllComments with ChangeNotifier {
   List<Comment> getComments() {
     return allComments;
   }
+
+  //function to add comments
+  void addComment(profilePic, username, comment, action, timeStamp) {
+    allComments.insert(
+        0, Comment(profilePic, username, comment, action, timeStamp));
+
+    notifyListeners();
+  }
+
+  //function to remove comment
+  void removeComment(Comment comment) {
+    allComments.remove(comment);
+    notifyListeners();
+  }
+
+  //function to update comment
+  void editComment(Comment comment, String newComment) {
+    comment.comment = newComment; //update the comment property
+    comment.timeStamp = DateTime.now().toString();
+
+    notifyListeners();
+  }
 }

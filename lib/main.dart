@@ -8,7 +8,6 @@ import 'package:planethero_application/screens/clicked_action_screen.dart';
 import 'package:planethero_application/screens/comments_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
-import 'package:planethero_application/screens/parent_screen.dart';
 import 'package:planethero_application/screens/settings_screen.dart';
 import 'package:planethero_application/widgets/user-stats.dart';
 import 'package:provider/provider.dart';

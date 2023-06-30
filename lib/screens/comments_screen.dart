@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planethero_application/widgets/add-comment-modal.dart';
 import 'package:planethero_application/widgets/listview-comments.dart';
 import '../models/hero-action.dart';
 import 'login_signup_screen.dart';
@@ -32,8 +33,14 @@ class _CommentsScreenState extends State<CommentsScreen> {
         padding: EdgeInsets.all(35),
         child: ListComments(selectedAction),
       ),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AddCommentModal(selectedAction),
+            );
+          },
+          child: Icon(Icons.add)),
     );
   }
 }

@@ -92,7 +92,7 @@ class _ClickedActionState extends State<ClickedAction> {
                     ),
                     Spacer(), //give space between 'Hero Points' and 'Difficulty'
                     Padding(
-                      padding: const EdgeInsets.only(right: 250),
+                      padding: const EdgeInsets.only(right: 190.0),
                       child: Text(
                         'Difficulty',
                         style: TextStyle(fontFamily: 'Roboto', fontSize: 10),
@@ -119,11 +119,11 @@ class _ClickedActionState extends State<ClickedAction> {
                       padding: EdgeInsets.only(
                           right: selectedAction.heroPoints.toString().length ==
                                   1
-                              ? 259 //If hero points is 1 digit, return padding of 259px from the right
+                              ? 198 //If hero points is 1 digit, return padding of 198px from the right
                               : (selectedAction.heroPoints.toString().length ==
                                       2
-                                  ? 251 //else if hero points is 2 digit, return padding of 251px from the right
-                                  : 259)), //else if neither 1 or 2 digit, return padding of 259px from the right
+                                  ? 191 //else if hero points is 2 digit, return padding of 191px from the right
+                                  : 198)), //else if neither 1 or 2 digit, return padding of 198px from the right
                       child: Text(
                         '${selectedAction.difficulty}',
                         style: TextStyle(
@@ -244,17 +244,23 @@ class _ClickedActionState extends State<ClickedAction> {
                 SizedBox(
                   height: 20,
                 ), //Space between divider and description title
-                Text('Description',
-                    style: TextStyle(
-                      fontFamily: 'Roboto Bold',
-                      fontSize: 20,
-                    )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Text('Description',
+                      style: TextStyle(
+                        fontFamily: 'Roboto Bold',
+                        fontSize: 20,
+                      )),
+                ),
                 SizedBox(
                   height: 20,
                 ), //space between description title and text
-                Text(
-                  '${selectedAction.description}',
-                  style: TextStyle(fontFamily: 'Roboto', fontSize: 15),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Text(
+                    '${selectedAction.description}',
+                    style: TextStyle(fontFamily: 'Roboto', fontSize: 15),
+                  ),
                 ),
                 SizedBox(
                   height: 20,
