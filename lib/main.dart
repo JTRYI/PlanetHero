@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/providers/all_actions.dart';
+import 'package:planethero_application/providers/all_comments.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/actions_screen.dart';
 import 'package:planethero_application/screens/bookmarks_screen.dart';
 import 'package:planethero_application/screens/clicked_action_screen.dart';
+import 'package:planethero_application/screens/comments_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
 import 'package:planethero_application/screens/parent_screen.dart';
@@ -29,13 +31,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<AllActions>(
           create: (ctx) => AllActions(),
         ),
+        ChangeNotifierProvider<AllComments>(
+          create: (ctx) => AllComments(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: ParentScreen(),
+        home: LoginSignupScreen(),
         routes: {
           MainScreen.routeName: (_) {
             return MainScreen();
@@ -57,6 +62,9 @@ class MyApp extends StatelessWidget {
           },
           ClickedAction.routeName: (_) {
             return ClickedAction();
+          },
+          CommentsScreen.routeName: (_) {
+            return CommentsScreen();
           }
         },
       ),
@@ -106,7 +114,12 @@ class MainScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       //Users profile pic
-                      Icon(Icons.account_circle, size: 80),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            '${usersList.loggedInUser?.profilePic}'),
+                        radius: 40,
+                        backgroundColor: Colors.white,
+                      ),
                       SizedBox(
                           height:
                               10), //add 10 px of space between user profile and users name

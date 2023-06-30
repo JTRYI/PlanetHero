@@ -5,8 +5,37 @@ import 'package:planethero_application/screens/parent_screen.dart';
 import '../models/user.dart';
 
 class AllUsers with ChangeNotifier {
-  //create list to store users
-  List<User> allUsers = [];
+  //create list to store users and populate it
+  List<User> allUsers = [
+    User(
+        username: 'Tester',
+        email: 'tester@gmail.com',
+        password: 'password1',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 5,
+        heroPoints: 25),
+    User(
+        username: 'Tester2',
+        email: 'tester2@gmail.com',
+        password: 'password2',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 10,
+        heroPoints: 100),
+    User(
+        username: 'Tester3',
+        email: 'tester3@gmail.com',
+        password: 'password3',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 5,
+        heroPoints: 50),
+    User(
+        username: 'Tester4',
+        email: 'tester4@gmail.com',
+        password: 'password4',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 1,
+        heroPoints: 100),
+  ];
 
   //Store the logged in user
   User? loggedInUser;
@@ -25,9 +54,11 @@ class AllUsers with ChangeNotifier {
   }
 
   //function to register user
-  void registerUser(username, email, password, actionsCompleted, heroPoints) {
+  void registerUser(
+      username, email, password, profilePic, actionsCompleted, heroPoints) {
     //insert User object into index 0 of the users list
 
+    profilePic = 'https://cdn-icons-png.flaticon.com/128/9797/9797462.png';
     actionsCompleted = 0;
     heroPoints = 0;
 
@@ -37,6 +68,7 @@ class AllUsers with ChangeNotifier {
             username: username,
             email: email,
             password: password,
+            profilePic: profilePic,
             actionsCompleted: actionsCompleted,
             heroPoints: heroPoints));
 

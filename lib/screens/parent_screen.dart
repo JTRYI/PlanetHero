@@ -15,13 +15,14 @@ class ParentScreen extends StatefulWidget {
 class _ParentScreenState extends State<ParentScreen> {
   int _currentIndex = 0; // Index of the currently selected tab
   var reverse = false; // Flag to determine if the transition should be reversed
+  // List of screens to be displayed based on the selected tab
   var screens = [
     MainScreen(),
     ActionScreen(),
     BookmarkScreen(),
     LeaderboardScreen(),
     SettingScreen()
-  ]; // List of screens to be displayed based on the selected tab
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class _ParentScreenState extends State<ParentScreen> {
         duration: const Duration(milliseconds: 750),
         reverse: reverse,
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+          // Transition animation using SharedAxisTransition
           return SharedAxisTransition(
             animation: primaryAnimation,
             secondaryAnimation: secondaryAnimation,
@@ -44,7 +46,7 @@ class _ParentScreenState extends State<ParentScreen> {
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.greenAccent.shade400,
         onTap: _onItemTapped,
-        currentIndex: _currentIndex,
+        currentIndex: _currentIndex, // Index of the currently selected tab
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
         selectedLabelStyle:

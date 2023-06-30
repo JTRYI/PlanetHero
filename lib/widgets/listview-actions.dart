@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:planethero_application/models/hero-action.dart';
 import 'package:planethero_application/providers/all_actions.dart';
 import 'package:planethero_application/screens/clicked_action_screen.dart';
+import 'package:planethero_application/screens/comments_screen.dart';
 import 'package:provider/provider.dart';
 
 class ListActions extends StatelessWidget {
@@ -126,7 +127,10 @@ class ListActions extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 50),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(CommentsScreen.routeName, arguments: currentAction);
+                      },
                       icon: Icon(
                         Icons.comment_rounded,
                         size: 15,

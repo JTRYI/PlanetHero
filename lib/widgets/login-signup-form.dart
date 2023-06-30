@@ -6,9 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/all_users.dart';
 
-
 class LoginSignupForm extends StatefulWidget {
-  
   @override
   State<LoginSignupForm> createState() => _LoginSignupFormState();
 }
@@ -37,6 +35,7 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
     String email = emailController.text;
     String username = usernameController.text;
     String password = passwordController.text;
+    String profilePic = '';
     int actionsCompleted = 0;
     int heroPoints = 0;
 
@@ -48,7 +47,7 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
       debugPrint(password);
 
       usersList.registerUser(
-          username, email, password, actionsCompleted, heroPoints);
+          username, email, password, profilePic, actionsCompleted, heroPoints);
 
       // code below to check if user got added into the list
       //usersList.printUsers();
@@ -81,17 +80,18 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
 
   @override
   void dispose() {
-  // Dispose of the controller objects
+    // Dispose of the controller objects
 
-  emailController.dispose(); // Dispose the email text field controller
-  usernameController.dispose(); // Dispose the username text field controller
-  passwordController.dispose(); // Dispose the password text field controller
-  emailLoginController.dispose(); // Dispose the email login text field controller
-  passwordLoginController.dispose(); // Dispose the password login text field controller
+    emailController.dispose(); // Dispose the email text field controller
+    usernameController.dispose(); // Dispose the username text field controller
+    passwordController.dispose(); // Dispose the password text field controller
+    emailLoginController
+        .dispose(); // Dispose the email login text field controller
+    passwordLoginController
+        .dispose(); // Dispose the password login text field controller
 
-  super.dispose(); // Call the super class's dispose method
-}
-
+    super.dispose(); // Call the super class's dispose method
+  }
 
   Widget build(BuildContext context) {
     //declare the user provider
