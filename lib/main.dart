@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/providers/all_actions.dart';
+import 'package:planethero_application/providers/all_bookmarks.dart';
 import 'package:planethero_application/providers/all_comments.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/actions_screen.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AllComments>(
           create: (ctx) => AllComments(),
+        ),
+        ChangeNotifierProvider<AllBookmarks>(
+          create: (ctx) => AllBookmarks(),
         ),
       ],
       child: MaterialApp(
@@ -159,9 +163,9 @@ class MainScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (_) => ActionScreen()));
+                              // Navigator.of(context).pushReplacement(
+                              //     MaterialPageRoute(
+                              //         builder: (_) => ActionScreen()));
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width -

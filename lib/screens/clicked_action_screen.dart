@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/models/hero-action.dart';
+import 'package:planethero_application/providers/all_bookmarks.dart';
+import 'package:provider/provider.dart';
+import '../providers/all_users.dart';
 import '../widgets/listview-actions.dart';
 import 'login_signup_screen.dart';
 
@@ -17,9 +20,59 @@ class ClickedAction extends StatefulWidget {
 class _ClickedActionState extends State<ClickedAction> {
   @override
   Widget build(BuildContext context) {
-    // retrieve the arguments
+    // retrieve the arguments from actions screen
     HeroAction selectedAction =
         ModalRoute.of(context)?.settings.arguments as HeroAction;
+
+    //declare the bookmarks provider
+    AllBookmarks allBookmarks = Provider.of<AllBookmarks>(context);
+
+    //declare the users provider
+    AllUsers allUsers = Provider.of<AllUsers>(context);
+
+    //declare the variables
+    String username = allUsers.loggedInUser!
+        .username; //'!' means loggedInUser is non-null, allows me to access the username property of the non-null value.
+    String imageUrl = selectedAction.imageUrl;
+    String actionTitle = selectedAction.actionTitle;
+    int heroPoints = selectedAction.heroPoints;
+
+    //function to add to bookmarks
+    void addToBookmark() {
+      showDialog<Null>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text(
+                'Confirmation!',
+                style: TextStyle(fontFamily: 'Roboto Bold'),
+              ),
+              content: const Text(
+                'Are you sure you want to add to bookmarks?',
+                style: TextStyle(fontFamily: 'Roboto'),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      allBookmarks.addBookmark(
+                          username, imageUrl, actionTitle, heroPoints);
+                      //show a snackbar of bookmark added successfully
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Action added to Bookmarks!'),
+                      ));
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Yes')),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('No'))
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
@@ -150,23 +203,32 @@ class _ClickedActionState extends State<ClickedAction> {
                   children: [
                     Column(
                       children: [
-                        Container(
-                          width: 45,
-                          height: 45,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white, //Colour of circle
-                            border: Border.all(
-                              color: Colors.greenAccent
-                                  .shade700, //Color for border or outline of circle
-                              width: 2,
-                            ),
-                          ),
-                          child: ClipOval(
-                            //Icon inside circle
-                            child: Icon(
-                              Icons.bookmark_add,
-                              color: Colors.greenAccent.shade700,
+                        MouseRegion(
+                          cursor: SystemMouseCursors
+                              .click, // Set the cursor to a clickable cursor
+                          child: GestureDetector(
+                            onTap: () {
+                              addToBookmark();
+                            },
+                            child: Container(
+                              width: 45,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white, //Colour of circle
+                                border: Border.all(
+                                  color: Colors.greenAccent
+                                      .shade700, //Color for border or outline of circle
+                                  width: 2,
+                                ),
+                              ),
+                              child: ClipOval(
+                                //Icon inside circle
+                                child: Icon(
+                                  Icons.bookmark_add,
+                                  color: Colors.greenAccent.shade700,
+                                ),
+                              ),
                             ),
                           ),
                         ),

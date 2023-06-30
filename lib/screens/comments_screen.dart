@@ -18,7 +18,7 @@ class CommentsScreen extends StatefulWidget {
 class _CommentsScreenState extends State<CommentsScreen> {
   @override
   Widget build(BuildContext context) {
-    // retrieve the arguments
+    // retrieve the arguments from actions screen
     HeroAction selectedAction =
         ModalRoute.of(context)?.settings.arguments as HeroAction;
     return Scaffold(
