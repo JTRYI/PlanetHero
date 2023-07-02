@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:planethero_application/models/hero-action.dart';
 import 'package:planethero_application/providers/all_bookmarks.dart';
 import 'package:provider/provider.dart';
+import '../models/user.dart';
 import '../providers/all_users.dart';
-import '../widgets/listview-actions.dart';
 import 'login_signup_screen.dart';
 
 Color background =
@@ -37,6 +37,9 @@ class _ClickedActionState extends State<ClickedAction> {
     String actionTitle = selectedAction.actionTitle;
     int heroPoints = selectedAction.heroPoints;
 
+    //create variable for logged in user
+    User? loggedUser = allUsers.loggedInUser;
+
     //function to add to bookmarks
     void addToBookmark() {
       showDialog<Null>(
@@ -68,6 +71,67 @@ class _ClickedActionState extends State<ClickedAction> {
                       Navigator.of(context).pop();
                     },
                     child: const Text('No'))
+              ],
+            );
+          });
+    }
+
+    //function to add points
+    void addPoints(loggedUser, heroPoints, context) {
+      showDialog<Null>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text(
+                'Well Done!',
+                style: TextStyle(fontFamily: 'Roboto Bold'),
+              ),
+              content: const Text(
+                'Thanks for helping to build a sustainable future! Keep it up!',
+                style: TextStyle(fontFamily: 'Roboto'),
+              ),
+              actions: [
+                Container(
+                    height: 35,
+                    decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(
+                            0.5), //setting background colour with reduced opacity
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.red)),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                              fontFamily: 'Roboto Bold', color: Colors.white),
+                        ))),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent.shade700.withOpacity(
+                          0.5), //setting background colour with reduced opacity
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.greenAccent.shade700),
+                    ),
+                    child: TextButton(
+                        onPressed: () {
+                          allUsers.addPoints(loggedUser, heroPoints, context);
+                          //show a snackbar of bookmark added successfully
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Points Added!'),
+                          ));
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Claim Points',
+                          style: TextStyle(
+                              fontFamily: 'Roboto Bold', color: Colors.white),
+                        ))),
               ],
             );
           });
@@ -254,23 +318,31 @@ class _ClickedActionState extends State<ClickedAction> {
                     ),
                     Column(
                       children: [
-                        Container(
-                          width: 45,
-                          height: 45,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white, //Colour of circle
-                            border: Border.all(
-                              color: Colors.greenAccent
-                                  .shade700, //Color for border or outline of circle
-                              width: 2,
-                            ),
-                          ),
-                          child: ClipOval(
-                            //Icon inside circle
-                            child: Icon(
-                              Icons.task_outlined,
-                              color: Colors.greenAccent.shade700,
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              addPoints(loggedUser, heroPoints, context);
+                            },
+                            child: Container(
+                              width: 45,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white, //Colour of circle
+                                border: Border.all(
+                                  color: Colors.greenAccent
+                                      .shade700, //Color for border or outline of circle
+                                  width: 2,
+                                ),
+                              ),
+                              child: ClipOval(
+                                //Icon inside circle
+                                child: Icon(
+                                  Icons.task_outlined,
+                                  color: Colors.greenAccent.shade700,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -333,5 +405,16 @@ class _ClickedActionState extends State<ClickedAction> {
         ),
       ),
     );
+  }
+}
+
+//function to show what color base on the difficulty of action
+getColorForDifficulty(String difficulty) {
+  if (difficulty == 'Easy') {
+    return Colors.greenAccent.shade400;
+  } else if (difficulty == 'Medium') {
+    return Colors.orange.shade400;
+  } else if (difficulty == 'Hard') {
+    return Colors.red;
   }
 }

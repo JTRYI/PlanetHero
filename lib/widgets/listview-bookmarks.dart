@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/models/bookmark.dart';
 import 'package:planethero_application/models/hero-action.dart';
-import 'package:planethero_application/providers/all_actions.dart';
 import 'package:planethero_application/providers/all_bookmarks.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/clicked_action_screen.dart';
 import 'package:planethero_application/screens/comments_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../models/user.dart';
 
 class ListBookmarks extends StatelessWidget {
   @override
@@ -19,6 +20,9 @@ class ListBookmarks extends StatelessWidget {
 
     //Get logged in user's username
     String loggedUsername = allUsers.loggedInUser!.username;
+
+    //Get logged user
+    User? loggedUser = allUsers.loggedInUser;
 
     //create a new list to store logged in user bookmarks only
     List<Bookmark> userBookmarks = allBookmarks
@@ -59,6 +63,67 @@ class ListBookmarks extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                     child: const Text('No'))
+              ],
+            );
+          });
+    }
+
+    //function to add points
+    void addPoints(loggedUser, heroPoints, context) {
+      showDialog<Null>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text(
+                'Well Done!',
+                style: TextStyle(fontFamily: 'Roboto Bold'),
+              ),
+              content: const Text(
+                'Thanks for helping to build a sustainable future! Keep it up!',
+                style: TextStyle(fontFamily: 'Roboto'),
+              ),
+              actions: [
+                Container(
+                    height: 35,
+                    decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(
+                            0.5), //setting background colour with reduced opacity
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.red)),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                              fontFamily: 'Roboto Bold', color: Colors.white),
+                        ))),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent.shade700.withOpacity(
+                          0.5), //setting background colour with reduced opacity
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.greenAccent.shade700),
+                    ),
+                    child: TextButton(
+                        onPressed: () {
+                          allUsers.addPoints(loggedUser, heroPoints, context);
+                          //show a snackbar of bookmark added successfully
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Points Added!'),
+                          ));
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Claim Points',
+                          style: TextStyle(
+                              fontFamily: 'Roboto Bold', color: Colors.white),
+                        ))),
               ],
             );
           });
@@ -153,26 +218,37 @@ class ListBookmarks extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Container(
-                    height: 15, //set height of text button to be 15px
-                    decoration: BoxDecoration(
-                      color: Colors.greenAccent.shade700.withOpacity(
-                          0.5), //setting background colour with reduced opacity
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.greenAccent.shade700),
-                    ),
-                    child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Claim Now',
-                          style: TextStyle(
-                              fontFamily: 'Roboto Bold',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ))),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: currentBookmark.heroPoints.toString().length == 1
+                          ? 10
+                          : (currentBookmark.heroPoints.toString().length == 2)
+                              ? 4
+                              : 0),
+                  child: Container(
+                      height: 15, //set height of text button to be 15px
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent.shade700.withOpacity(
+                            0.5), //setting background colour with reduced opacity
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.greenAccent.shade700),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            addPoints(loggedUser, currentBookmark.heroPoints,
+                                context);
+                          },
+                          child: Text(
+                            'Claim Now',
+                            style: TextStyle(
+                                fontFamily: 'Roboto Bold',
+                                fontSize: 12,
+                                color: Colors.white),
+                          ))),
+                ),
                 Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(right: 50),
+                  padding: const EdgeInsets.only(right: 55),
                   child: IconButton(
                       onPressed: () {
                         removeBookmark(i, context);

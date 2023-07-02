@@ -172,4 +172,11 @@ class AllUsers with ChangeNotifier {
 
     return sortedUsers;
   }
+
+  void addPoints(User loggedInUser, int addedPoints, BuildContext context) {
+    loggedInUser.heroPoints += addedPoints;
+    loggedInUser.actionsCompleted += 1;
+    notifyListeners();
+  }
+
 }

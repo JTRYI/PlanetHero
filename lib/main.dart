@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:planethero_application/providers/all_actions.dart';
 import 'package:planethero_application/providers/all_bookmarks.dart';
 import 'package:planethero_application/providers/all_comments.dart';
 import 'package:planethero_application/providers/all_users.dart';
@@ -27,9 +26,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AllUsers>(
           create: (ctx) => AllUsers(),
-        ),
-        ChangeNotifierProvider<AllActions>(
-          create: (ctx) => AllActions(),
         ),
         ChangeNotifierProvider<AllComments>(
           create: (ctx) => AllComments(),
