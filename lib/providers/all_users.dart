@@ -35,6 +35,48 @@ class AllUsers with ChangeNotifier {
         profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
         actionsCompleted: 1,
         heroPoints: 100),
+    User(
+        username: 'Tester5',
+        email: 'tester5@gmail.com',
+        password: 'password5',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 2,
+        heroPoints: 15),
+    User(
+        username: 'Tester6',
+        email: 'tester6@gmail.com',
+        password: 'password6',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 2,
+        heroPoints: 105),
+    User(
+        username: 'Tester7',
+        email: 'tester7@gmail.com',
+        password: 'password7',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 3,
+        heroPoints: 115),
+    User(
+        username: 'Tester8',
+        email: 'tester8@gmail.com',
+        password: 'password8',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 1,
+        heroPoints: 100),
+    User(
+        username: 'Tester9',
+        email: 'tester9@gmail.com',
+        password: 'password9',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 3,
+        heroPoints: 115),
+    User(
+        username: 'Tester10',
+        email: 'tester10@gmail.com',
+        password: 'password10',
+        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+        actionsCompleted: 1,
+        heroPoints: 100),
   ];
 
   //Store the logged in user
@@ -118,5 +160,16 @@ class AllUsers with ChangeNotifier {
     int ranking = loggedInUserIndex + 1;
 
     return ranking;
+  }
+
+  //create a leaderboard list in descending order
+  List<User> getLeaderboard() {
+    //create a copy of the allUsers list
+    List<User> sortedUsers = List.from(allUsers);
+
+    //sort the list based on hero points in descending order
+    sortedUsers.sort((a, b) => b.heroPoints.compareTo(a.heroPoints));
+
+    return sortedUsers;
   }
 }
