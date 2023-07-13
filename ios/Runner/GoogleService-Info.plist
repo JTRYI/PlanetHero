@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>17527570531-nrnbiqfis235bdpj3v0kta3jln4uahch.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.17527570531-nrnbiqfis235bdpj3v0kta3jln4uahch</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDiZSRDyAcVRzMK2fZS7ZVjjxURw-FUyPU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>17527570531</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.planetheroApplication</string>
+	<key>PROJECT_ID</key>
+	<string>planet-hero-202db</string>
+	<key>STORAGE_BUCKET</key>
+	<string>planet-hero-202db.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:17527570531:ios:60025919fff62145087856</string>
+</dict>
+</plist>

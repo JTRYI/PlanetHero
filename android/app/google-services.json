@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "17527570531",
+    "project_id": "planet-hero-202db",
+    "storage_bucket": "planet-hero-202db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17527570531:android:5ba8f3bfc1f2046f087856",
+        "android_client_info": {
+          "package_name": "com.example.planethero_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17527570531-l33c7h6np5m02p0772gj38i2nbmtsckg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXV-4AtWXS1H0QAO_qCXS3c3AK0tb3LwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17527570531-l33c7h6np5m02p0772gj38i2nbmtsckg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

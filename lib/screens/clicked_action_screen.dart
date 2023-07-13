@@ -31,14 +31,14 @@ class _ClickedActionState extends State<ClickedAction> {
     AllUsers allUsers = Provider.of<AllUsers>(context);
 
     //declare the variables
-    String username = allUsers.loggedInUser!
+    String username = allUsers.loggedInUserObject!
         .username; //'!' means loggedInUser is non-null, allows me to access the username property of the non-null value.
     String imageUrl = selectedAction.imageUrl;
     String actionTitle = selectedAction.actionTitle;
     int heroPoints = selectedAction.heroPoints;
 
     //create variable for logged in user
-    User? loggedUser = allUsers.loggedInUser;
+    UserObject? loggedUser = allUsers.loggedInUserObject;
 
     //function to add to bookmarks
     void addToBookmark() {

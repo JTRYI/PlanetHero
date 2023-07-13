@@ -3,12 +3,34 @@ import 'package:planethero_application/screens/login_signup_screen.dart';
 import 'package:planethero_application/widgets/update-password-form.dart';
 import 'package:planethero_application/widgets/update-user-form.dart';
 
+import '../services/auth_service.dart';
+
 Color background =
     Color(int.parse(hexColor.substring(1, 7), radix: 16) + 0xFF000000);
 
 class SettingScreen extends StatelessWidget {
   //declare route name
   static String routeName = '/settings';
+
+  AuthService authService = AuthService();
+
+  //function to logout
+  logOut(context) {
+    return authService.logOut().then((value) {
+      FocusScope.of(context).unfocus();
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Logout Successfully!'),
+      ));
+    }).catchError((error) {
+      FocusScope.of(context).unfocus();
+      String message = error.toString();
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+      ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +66,7 @@ class SettingScreen extends StatelessWidget {
                             border: Border.all(color: Colors.red)),
                         child: TextButton(
                             onPressed: () {
-                              Navigator.of(context).pushNamed(LoginSignupScreen
-                                  .routeName); //Logout, go to login signup screen
+                              logOut(context);
                             },
                             child: Text(
                               'Logout',

@@ -26,8 +26,8 @@ class _AddCommentModalState extends State<AddCommentModal> {
     //check on validation
     bool isValid = commentForm.currentState!.validate();
 
-    String profilePic = usersList.loggedInUser!.profilePic;
-    String username = usersList.loggedInUser!.username;
+    String profilePic = usersList.loggedInUserObject!.profilePic;
+    String username = usersList.loggedInUserObject!.username;
     String action = widget.selectedAction.actionTitle;
     String timeStamp = DateTime.now().toString();
     if (isValid) {
@@ -55,7 +55,7 @@ class _AddCommentModalState extends State<AddCommentModal> {
 
     // Create a TextEditingController and set the initial value
     TextEditingController usernameController =
-        TextEditingController(text: usersList.loggedInUser!.username);
+        TextEditingController(text: usersList.loggedInUserObject!.username);
 
     @override
     void dispose() {

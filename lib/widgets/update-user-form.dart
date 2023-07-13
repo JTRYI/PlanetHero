@@ -31,11 +31,11 @@ class UpdateUserForm extends StatelessWidget {
 
     // Create a TextEditingController and set the value for username
     TextEditingController usernameController =
-        TextEditingController(text: allUsers.loggedInUser!.username);
+        TextEditingController(text: allUsers.loggedInUserObject!.username);
 
     // Create a TextEditingController for email and set the initial value
     TextEditingController emailController =
-        TextEditingController(text: allUsers.loggedInUser!.email);
+        TextEditingController(text: allUsers.loggedInUserObject!.email);
 
     return Container(
       width: MediaQuery.of(context).size.width - 70,
@@ -51,7 +51,7 @@ class UpdateUserForm extends StatelessWidget {
             Center(
               child: CircleAvatar(
                 backgroundImage:
-                    NetworkImage('${allUsers.loggedInUser?.profilePic}'),
+                    NetworkImage('${allUsers.loggedInUserObject?.profilePic}'),
                 radius: 40,
                 backgroundColor: Colors.white,
               ),
@@ -102,7 +102,7 @@ class UpdateUserForm extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      initialValue: allUsers.loggedInUser!.email.toString(),
+                      initialValue: allUsers.loggedInUserObject!.email.toString(),
                       style: TextStyle(fontFamily: 'Roboto', fontSize: 12),
                       decoration: InputDecoration(
                         border: enabledBorder,

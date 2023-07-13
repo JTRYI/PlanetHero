@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:planethero_application/firebase_options.dart';
+import 'package:planethero_application/models/user.dart';
 import 'package:planethero_application/providers/all_bookmarks.dart';
 import 'package:planethero_application/providers/all_comments.dart';
 import 'package:planethero_application/providers/all_users.dart';
@@ -8,66 +12,104 @@ import 'package:planethero_application/screens/clicked_action_screen.dart';
 import 'package:planethero_application/screens/comments_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
+import 'package:planethero_application/screens/parent_screen.dart';
 import 'package:planethero_application/screens/settings_screen.dart';
+import 'package:planethero_application/services/auth_service.dart';
 import 'package:planethero_application/widgets/user-stats.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+import 'global/current_user_singleton.dart';
+
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ).then((value) {
+    runApp(MyApp());
+  });
 }
 
 Color background =
     Color(int.parse(hexColor.substring(1, 7), radix: 16) + 0xFF000000);
 
 class MyApp extends StatelessWidget {
+  //declare Authentication Service
+  AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AllUsers>(
-          create: (ctx) => AllUsers(),
-        ),
-        ChangeNotifierProvider<AllComments>(
-          create: (ctx) => AllComments(),
-        ),
-        ChangeNotifierProvider<AllBookmarks>(
-          create: (ctx) => AllBookmarks(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
-        home: LoginSignupScreen(),
-        routes: {
-          MainScreen.routeName: (_) {
-            return MainScreen();
-          },
-          LoginSignupScreen.routeName: (_) {
-            return LoginSignupScreen();
-          },
-          ActionScreen.routeName: (_) {
-            return ActionScreen();
-          },
-          BookmarkScreen.routeName: (_) {
-            return BookmarkScreen();
-          },
-          LeaderboardScreen.routeName: (_) {
-            return LeaderboardScreen();
-          },
-          SettingScreen.routeName: (_) {
-            return SettingScreen();
-          },
-          ClickedAction.routeName: (_) {
-            return ClickedAction();
-          },
-          CommentsScreen.routeName: (_) {
-            return CommentsScreen();
-          }
-        },
-      ),
-    );
+    return StreamBuilder<User?>(
+        stream: authService.getAuthUser(),
+        builder: (context, snapshot) {
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider<AllUsers>(
+                create: (ctx) => AllUsers(),
+              ),
+              ChangeNotifierProvider<AllComments>(
+                create: (ctx) => AllComments(),
+              ),
+              ChangeNotifierProvider<AllBookmarks>(
+                create: (ctx) => AllBookmarks(),
+              ),
+            ],
+            child: FutureBuilder<UserObject>(
+                future: authService.getCurrentUser(),
+                builder: (context, usersnapshot) {
+                  if (usersnapshot.connectionState == ConnectionState.waiting) {
+                    // Display a loading indicator while fetching the current user data
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (usersnapshot.hasData) {
+                    // Current user data is available
+                    UserObject currentUser = usersnapshot.data!;
+                    CurrentUserSingleton().currentUser = currentUser;
+                    //2 prints below to check if it really got the current user data from firestore
+                    print('Username: ${currentUser.username}');
+                    print('actionsCompleted: ${currentUser.actionsCompleted}');
+                  }
+                  return MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      theme: ThemeData(
+                        primarySwatch: Colors.green,
+                      ),
+                      home: // use if else to route the landing page
+                          snapshot.connectionState == ConnectionState.waiting
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : snapshot.hasData
+                                  ? ParentScreen()
+                                  : LoginSignupScreen(),
+                      routes: {
+                        MainScreen.routeName: (_) {
+                          return MainScreen();
+                        },
+                        LoginSignupScreen.routeName: (_) {
+                          return LoginSignupScreen();
+                        },
+                        ActionScreen.routeName: (_) {
+                          return ActionScreen();
+                        },
+                        BookmarkScreen.routeName: (_) {
+                          return BookmarkScreen();
+                        },
+                        LeaderboardScreen.routeName: (_) {
+                          return LeaderboardScreen();
+                        },
+                        SettingScreen.routeName: (_) {
+                          return SettingScreen();
+                        },
+                        ClickedAction.routeName: (_) {
+                          return ClickedAction();
+                        },
+                        CommentsScreen.routeName: (_) {
+                          return CommentsScreen();
+                        }
+                      });
+                }),
+          );
+        });
   }
 }
 
@@ -75,10 +117,16 @@ class MainScreen extends StatelessWidget {
   //declare route name
   static String routeName = '/main-screen';
 
+  //declare Authentication Service
+  AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
     //declare the provider
     AllUsers usersList = Provider.of<AllUsers>(context);
+
+    final currentUser = CurrentUserSingleton()
+        .currentUser; // Access the currentUser from the singleton
 
     return Scaffold(
         backgroundColor: background,
@@ -114,8 +162,8 @@ class MainScreen extends StatelessWidget {
                     children: [
                       //Users profile pic
                       CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            '${usersList.loggedInUser?.profilePic}'),
+                        backgroundImage:
+                            NetworkImage('${currentUser?.profilePic}}'),
                         radius: 40,
                         backgroundColor: Colors.white,
                       ),
@@ -125,7 +173,7 @@ class MainScreen extends StatelessWidget {
 
                       // Users username
                       Text(
-                        "Welcome ${usersList.loggedInUser?.username}!",
+                        "Welcome ${currentUser?.username}!",
                         style: TextStyle(
                           fontFamily: 'Roboto Bold',
                           fontSize: 20,

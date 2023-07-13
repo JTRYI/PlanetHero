@@ -19,10 +19,10 @@ class ListBookmarks extends StatelessWidget {
     AllUsers allUsers = Provider.of<AllUsers>(context);
 
     //Get logged in user's username
-    String loggedUsername = allUsers.loggedInUser!.username;
+    String loggedUsername = allUsers.loggedInUserObject!.username;
 
     //Get logged user
-    User? loggedUser = allUsers.loggedInUser;
+    UserObject? loggedUser = allUsers.loggedInUserObject;
 
     //create a new list to store logged in user bookmarks only
     List<Bookmark> userBookmarks = allBookmarks

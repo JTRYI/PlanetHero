@@ -32,7 +32,7 @@ class ListComments extends StatelessWidget {
         : []; //else, no comment matches or the actions has no comments, return a empty list
 
     //Get the curent user username
-    String currentUsername = usersList.loggedInUser!.username;
+    String currentUsername = usersList.loggedInUserObject!.username;
 
     //method to remove Comment with alert dialog
     void removeComment(int index, context) {

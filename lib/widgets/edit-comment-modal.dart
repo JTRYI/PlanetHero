@@ -62,7 +62,7 @@ class _EditCommentModalState extends State<EditCommentModal> {
 
     // Create a TextEditingController and set the initial value
     TextEditingController usernameController =
-        TextEditingController(text: usersList.loggedInUser!.username);
+        TextEditingController(text: usersList.loggedInUserObject!.username);
 
     @override
     void dispose() {

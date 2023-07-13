@@ -8,6 +8,7 @@ import 'package:planethero_application/screens/settings_screen.dart';
 import '../main.dart';
 
 class ParentScreen extends StatefulWidget {
+  
   @override
   State<ParentScreen> createState() => _ParentScreenState();
 }
@@ -15,6 +16,7 @@ class ParentScreen extends StatefulWidget {
 class _ParentScreenState extends State<ParentScreen> {
   int _currentIndex = 0; // Index of the currently selected tab
   var reverse = false; // Flag to determine if the transition should be reversed
+
   // List of screens to be displayed based on the selected tab
   var screens = [
     MainScreen(),

@@ -1,10 +1,32 @@
 // ignore_for_file: non_constant_identifier_names
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:planethero_application/services/auth_service.dart';
 import 'package:planethero_application/widgets/logo-image.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/all_users.dart';
+import '../screens/parent_screen.dart';
+
+//function to generate a random username for user when register complete
+String generateRandomUsername() {
+  final random = Random();
+
+  // Generate a random string of letters and numbers
+  String randomString(int length) {
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return String.fromCharCodes(Iterable.generate(
+        length, (_) => chars.codeUnitAt(random.nextInt(chars.length))));
+  }
+
+  // Generate a random username with a combination of letters and numbers
+  final username = randomString(8); // Change the length as desired
+
+  return username;
+}
 
 class LoginSignupForm extends StatefulWidget {
   @override
@@ -17,8 +39,8 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
 
   //Texts for sign up form
   TextEditingController emailController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   //Texts for Login Form
   TextEditingController emailLoginController = TextEditingController();
@@ -30,51 +52,87 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
   //form key for login form
   var formLoginKey = GlobalKey<FormState>();
 
-  //function to save sign up form
-  void saveForm(usersList) {
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  //function to sign up
+  register() {
     String email = emailController.text;
-    String username = usernameController.text;
     String password = passwordController.text;
-    String profilePic = '';
+    String confirmPassword = confirmPasswordController.text;
+    String randomUsername = generateRandomUsername();
+    String profilePic = 'https://cdn-icons-png.flaticon.com/128/9797/9797462.png';
     int actionsCompleted = 0;
     int heroPoints = 0;
 
     bool isValid = formKey.currentState!.validate();
 
-    if (isValid) {
-      debugPrint(email);
-      debugPrint(username);
-      debugPrint(password);
+    if (password == confirmPassword) {
+      if (isValid) {
+        debugPrint(email);
+        debugPrint(password);
 
-      usersList.registerUser(
-          username, email, password, profilePic, actionsCompleted, heroPoints);
+        AuthService authService = AuthService();
+        authService.register(email, password).then((user) {
+          fireStore.collection('users').doc(user.user?.uid).set({
+            'uid': user.user!.uid,
+            'username': randomUsername,
+            'email': email,
+            'password': password,
+            'profilePic': profilePic,
+            'actionsCompleted': actionsCompleted,
+            'heroPoints': heroPoints,
+          });
 
-      // code below to check if user got added into the list
-      //usersList.printUsers();
-
-      //reset the form
-      formKey.currentState!.reset();
-      //show a snackbar of user registered successfully
+          FocusScope.of(context).unfocus();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          //reset the form
+          formKey.currentState!.reset();
+          //show a snackbar of user registered successfully
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Registered Successfully!'),
+          ));
+        }).catchError((error) {
+          FocusScope.of(context).unfocus();
+          String message = error.toString();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(message)));
+        });
+      }
+    } else {
+      //show a snackbar of password and confirm password not matching
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Registered successfully!'),
+        content: Text('Passwords do not match!'),
       ));
     }
   }
 
-  void saveLoginForm(usersList) {
-    String loginEmail = emailLoginController.text;
-    String loginPassword = passwordLoginController.text;
+  //function for login
+  login() {
+    String email = emailLoginController.text;
+    String password = passwordLoginController.text;
 
     bool isLoginValid = formLoginKey.currentState!.validate();
 
     if (isLoginValid) {
-      debugPrint(loginEmail);
-      debugPrint(loginPassword);
+      debugPrint(email);
+      debugPrint(password);
 
-      //loginUser function in AllUsers provider, checks if the email and password user keyed matches any in the user lists.
-      usersList.loginUser(loginEmail, loginPassword, context);
-
-      formLoginKey.currentState!.reset();
+      AuthService authService = AuthService();
+      authService.login(email, password).then((value) {
+        FocusScope.of(context).unfocus();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        formLoginKey.currentState!.reset();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Login Successful!'),
+        ));
+      }).catchError((error) {
+        FocusScope.of(context).unfocus();
+        String message = error.toString();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message)));
+      });
     }
   }
 
@@ -83,8 +141,9 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
     // Dispose of the controller objects
 
     emailController.dispose(); // Dispose the email text field controller
-    usernameController.dispose(); // Dispose the username text field controller
     passwordController.dispose(); // Dispose the password text field controller
+    confirmPasswordController
+        .dispose(); // Dispose the confirm password text field controller
     emailLoginController
         .dispose(); // Dispose the email login text field controller
     passwordLoginController
@@ -102,7 +161,7 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
         children: [
           Positioned(top: 0, right: 0, left: 0, child: LogoImage()),
           //Submit button
-          buildBottomHalfContainer(usersList, true),
+          buildBottomHalfContainer(true),
           //Main Container for Login and Signup
           // Use Animated Positioned to show animation when switching between login and sign up form
           AnimatedPositioned(
@@ -202,7 +261,7 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
             ),
           ),
           //Submit button
-          buildBottomHalfContainer(usersList, false),
+          buildBottomHalfContainer(false),
           // Or Sign Up With Section
           Positioned(
               top: MediaQuery.of(context).size.height - 70,
@@ -308,17 +367,6 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
         key: formKey,
         child: Column(
           children: [
-            buildTextField(
-                MdiIcons.accountCowboyHatOutline, "Username", false, false,
-                (value) {
-              if (value == null || value.length == 0) {
-                return 'Please enter a username!';
-              } else if (value.length < 3) {
-                return 'Please enter a username longer than 3 letters! ';
-              } else {
-                return null;
-              }
-            }, usernameController),
             buildTextField(MdiIcons.emailOutline, "Email", false, true,
                 (value) {
               if (value == null || value.length == 0) {
@@ -337,6 +385,14 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
                 return null;
               }
             }, passwordController),
+            buildTextField(
+                MdiIcons.lockOutline, "Confirm Password", true, false, (value) {
+              if (value == null || value.length == 0) {
+                return 'Please enter a password!';
+              } else {
+                return null;
+              }
+            }, confirmPasswordController),
           ],
         ),
       ),
@@ -370,7 +426,7 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
   }
 
 //Submit button method, like a object
-  Widget buildBottomHalfContainer(usersList, bool showShadow) {
+  Widget buildBottomHalfContainer(bool showShadow) {
     return AnimatedPositioned(
         duration: Duration(milliseconds: 600),
         curve: Curves.bounceOut,
@@ -413,9 +469,7 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
                         ]),
                     child: GestureDetector(
                       onTap: () {
-                        isSignupScreen
-                            ? saveForm(usersList)
-                            : saveLoginForm(usersList);
+                        isSignupScreen ? register() : login();
                       },
                       child: Icon(
                         MdiIcons.arrowRight,

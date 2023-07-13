@@ -16,7 +16,7 @@ class ListLeaderboard extends StatelessWidget {
     return ListView.separated(
       itemBuilder: (ctx, i) {
         //create the current user variable
-        User currentUser = allUsers.getLeaderboard()[i];
+        UserObject currentUser = allUsers.getLeaderboard()[i];
         //create variable called ranking, +1 since index starts from 0
         int ranking = i + 1;
         return Container(
