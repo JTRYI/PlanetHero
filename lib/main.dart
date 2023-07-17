@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:planethero_application/firebase_options.dart';
 import 'package:planethero_application/models/user.dart';
-import 'package:planethero_application/providers/all_bookmarks.dart';
-import 'package:planethero_application/providers/all_comments.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/actions_screen.dart';
 import 'package:planethero_application/screens/bookmarks_screen.dart';
@@ -21,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'global/current_user_singleton.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then((value) {
@@ -45,14 +44,8 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider<AllUsers>(
                 create: (ctx) => AllUsers(),
               ),
-              ChangeNotifierProvider<AllComments>(
-                create: (ctx) => AllComments(),
-              ),
-              ChangeNotifierProvider<AllBookmarks>(
-                create: (ctx) => AllBookmarks(),
-              ),
             ],
-            child: FutureBuilder<UserObject>(
+            child: FutureBuilder<UserObject?>(
                 future: authService.getCurrentUser(),
                 builder: (context, usersnapshot) {
                   if (usersnapshot.connectionState == ConnectionState.waiting) {
@@ -67,6 +60,8 @@ class MyApp extends StatelessWidget {
                     //2 prints below to check if it really got the current user data from firestore
                     print('Username: ${currentUser.username}');
                     print('actionsCompleted: ${currentUser.actionsCompleted}');
+                    print('profilepic: ${currentUser.profilePic}');
+                    print('uid: ${currentUser.uid}');
                   }
                   return MaterialApp(
                       debugShowCheckedModeBanner: false,
@@ -122,8 +117,8 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //declare the provider
-    AllUsers usersList = Provider.of<AllUsers>(context);
+    // //declare the provider
+    // AllUsers usersList = Provider.of<AllUsers>(context);
 
     final currentUser = CurrentUserSingleton()
         .currentUser; // Access the currentUser from the singleton
@@ -162,8 +157,7 @@ class MainScreen extends StatelessWidget {
                     children: [
                       //Users profile pic
                       CircleAvatar(
-                        backgroundImage:
-                            NetworkImage('${currentUser?.profilePic}}'),
+                        backgroundImage: NetworkImage(currentUser.profilePic),
                         radius: 40,
                         backgroundColor: Colors.white,
                       ),
@@ -173,7 +167,7 @@ class MainScreen extends StatelessWidget {
 
                       // Users username
                       Text(
-                        "Welcome ${currentUser?.username}!",
+                        "Welcome ${currentUser.username}!",
                         style: TextStyle(
                           fontFamily: 'Roboto Bold',
                           fontSize: 20,

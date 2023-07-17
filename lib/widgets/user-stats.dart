@@ -85,7 +85,7 @@ class _UserStatsState extends State<UserStats> {
                             right:
                                 30), //leaving a 30px gap between the text and the right of the container
                         child: Text(
-                          '${currentUser?.actionsCompleted}',
+                          '${currentUser.actionsCompleted}',
                           style: TextStyle(
                             fontSize: 15,
                             fontFamily: 'Roboto',
@@ -116,7 +116,7 @@ class _UserStatsState extends State<UserStats> {
                             right:
                                 30), //leaving a 30px gap between the text and the right of the container
                         child: Text(
-                          "${currentUser?.heroPoints}",
+                          "${currentUser.heroPoints}",
                           style: TextStyle(
                             fontSize: 15,
                             fontFamily: 'Roboto',

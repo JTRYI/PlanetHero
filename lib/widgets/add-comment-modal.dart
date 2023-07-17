@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:planethero_application/providers/all_comments.dart';
+import 'package:planethero_application/services/comment_service.dart';
+import '../global/current_user_singleton.dart';
 import '../models/hero-action.dart';
-import '../providers/all_users.dart';
 
 class AddCommentModal extends StatefulWidget {
   final HeroAction selectedAction;
@@ -16,23 +15,30 @@ class AddCommentModal extends StatefulWidget {
 
 class _AddCommentModalState extends State<AddCommentModal> {
   //declare the variables
+  final currentUser = CurrentUserSingleton()
+      .currentUser; // Access the currentUser from the singleton
+
   String? comment;
 
   //declare the form state
   var commentForm = GlobalKey<FormState>();
 
   //method to save comment form
-  void saveComment(AllUsers usersList, AllComments allComments) {
+  void saveComment() {
+    //declare comment service
+    CommentService commentService = CommentService();
     //check on validation
     bool isValid = commentForm.currentState!.validate();
 
-    String profilePic = usersList.loggedInUserObject!.profilePic;
-    String username = usersList.loggedInUserObject!.username;
+    String uid = currentUser.uid;
+    String profilePic = currentUser.profilePic;
+    String username = currentUser.username;
     String action = widget.selectedAction.actionTitle;
-    String timeStamp = DateTime.now().toString();
+    DateTime timeStamp = DateTime.now();
     if (isValid) {
       commentForm.currentState!.save();
-      allComments.addComment(profilePic, username, comment, action, timeStamp);
+      commentService.addComment(
+          profilePic, uid, username, comment, action, timeStamp);
       //hide the keyboard
       FocusScope.of(context).unfocus();
       //reset the form
@@ -47,15 +53,15 @@ class _AddCommentModalState extends State<AddCommentModal> {
 
   @override
   Widget build(BuildContext context) {
-    //declare the users provider
-    AllUsers usersList = Provider.of<AllUsers>(context);
+    // //declare the users provider
+    // AllUsers usersList = Provider.of<AllUsers>(context);
 
-    // Access the comments provider using Provider.of with the context
-    AllComments allComments = Provider.of<AllComments>(context);
+    // // Access the comments provider using Provider.of with the context
+    // AllComments allComments = Provider.of<AllComments>(context);
 
     // Create a TextEditingController and set the initial value
     TextEditingController usernameController =
-        TextEditingController(text: usersList.loggedInUserObject!.username);
+        TextEditingController(text: currentUser.username);
 
     @override
     void dispose() {
@@ -192,7 +198,7 @@ class _AddCommentModalState extends State<AddCommentModal> {
                             ),
                             child: TextButton(
                                 onPressed: () {
-                                  saveComment(usersList, allComments);
+                                  saveComment();
                                 },
                                 child: Text(
                                   'Submit',

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/models/comment.dart';
-import 'package:provider/provider.dart';
-import 'package:planethero_application/providers/all_comments.dart';
-import '../providers/all_users.dart';
+import 'package:planethero_application/services/comment_service.dart';
+import '../global/current_user_singleton.dart';
 
 class EditCommentModal extends StatefulWidget {
   final Comment currentComment;
@@ -15,6 +14,9 @@ class EditCommentModal extends StatefulWidget {
 }
 
 class _EditCommentModalState extends State<EditCommentModal> {
+  final currentUser = CurrentUserSingleton()
+      .currentUser; // Access the currentUser from the singleton
+
   //declare the variables
   String? updatedComment;
   String? initialComment;
@@ -22,14 +24,20 @@ class _EditCommentModalState extends State<EditCommentModal> {
   @override
   void initState() {
     super.initState();
-    initialComment = widget.currentComment.comment; //get the initial comment from the widget parameter which is currentComment
+    initialComment = widget.currentComment
+        .comment; //get the initial comment from the widget parameter which is currentComment
   }
 
   //declare the form state
   var commentForm = GlobalKey<FormState>();
 
   //method to save comment form
-  void saveComment(AllUsers usersList, AllComments allComments) {
+  void saveComment(id) {
+    //declare comment service
+    CommentService commentService = CommentService();
+
+    DateTime timeStamp = DateTime.now();
+    String username = currentUser.username;
     //check on validation
     bool isValid = commentForm.currentState!.validate();
 
@@ -38,7 +46,7 @@ class _EditCommentModalState extends State<EditCommentModal> {
       commentForm.currentState!.save();
       String? updatedText = updatedComment; // Handle nullability
       if (updatedText != null) {
-        allComments.editComment(currentComment, updatedText);
+        commentService.editComment(id, username, updatedComment, timeStamp);
         //hide the keyboard
         FocusScope.of(context).unfocus();
         //reset the form
@@ -54,15 +62,15 @@ class _EditCommentModalState extends State<EditCommentModal> {
 
   @override
   Widget build(BuildContext context) {
-    //declare the users provider
-    AllUsers usersList = Provider.of<AllUsers>(context);
+    // //declare the users provider
+    // AllUsers usersList = Provider.of<AllUsers>(context);
 
-    // Access the comments provider using Provider.of with the context
-    AllComments allComments = Provider.of<AllComments>(context);
+    // // Access the comments provider using Provider.of with the context
+    // AllComments allComments = Provider.of<AllComments>(context);
 
     // Create a TextEditingController and set the initial value
     TextEditingController usernameController =
-        TextEditingController(text: usersList.loggedInUserObject!.username);
+        TextEditingController(text: currentUser.username);
 
     @override
     void dispose() {
@@ -200,7 +208,7 @@ class _EditCommentModalState extends State<EditCommentModal> {
                             ),
                             child: TextButton(
                                 onPressed: () {
-                                  saveComment(usersList, allComments);
+                                  saveComment(widget.currentComment.id);
                                 },
                                 child: Text(
                                   'Edit',

@@ -57,7 +57,7 @@ greenhouse gases released into the atmosphere.'''),
     setState(() {
       displayList = allActions
           .where((action) =>
-              action.actionTitle!.toLowerCase().contains(value.toLowerCase()))
+              action.actionTitle.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
   }
@@ -120,67 +120,76 @@ greenhouse gases released into the atmosphere.'''),
               SizedBox(
                 height: 5, //Space between "Actions" Title and subtext
               ),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Steps you can take to build a Sustainable Future!',
-                    style: TextStyle(fontFamily: 'Roboto', fontSize: 15),
-                  ),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        //show bottom sheet dialogue on tap
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            padding: EdgeInsets.all(10),
-                            height: 100,
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      sortActionsByPointsLowToHigh();
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                  child: Text(
-                                    'Low - High Hero Points',
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto Bold',
-                                        fontSize: 15),
-                                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Steps you can take to build a Sustainable',
+                        style: TextStyle(fontFamily: 'Roboto', fontSize: 15),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            //show bottom sheet dialogue on tap
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                padding: EdgeInsets.all(10),
+                                height: 100,
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          sortActionsByPointsLowToHigh();
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                      child: Text(
+                                        'Low - High Hero Points',
+                                        style: TextStyle(
+                                            fontFamily: 'Roboto Bold',
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                    Divider(
+                                      height: 20,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          sortActionsByPointsHighToLow();
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                      child: Text(
+                                        'High - Low Hero Points',
+                                        style: TextStyle(
+                                            fontFamily: 'Roboto Bold',
+                                            fontSize: 15),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Divider(
-                                  height: 20,
-                                  color: Colors.grey.shade300,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      sortActionsByPointsHighToLow();
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                  child: Text(
-                                    'High - Low Hero Points',
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto Bold',
-                                        fontSize: 15),
-                                  ),
-                                )
-                              ],
-                            ),
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    child: Icon(
-                      Icons.filter_alt_sharp,
-                      color: Colors.greenAccent.shade400,
-                    ),
-                  )
+                        child: Icon(
+                          Icons.filter_alt_sharp,
+                          color: Colors.greenAccent.shade400,
+                        ),
+                      )
+                    ],
+                  ),
+                  Text(
+                    'Future!',
+                    style: TextStyle(fontFamily: 'Roboto', fontSize: 15),
+                  ),
                 ],
               ),
               SizedBox(

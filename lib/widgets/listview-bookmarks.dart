@@ -1,39 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:planethero_application/models/bookmark.dart';
-import 'package:planethero_application/models/hero-action.dart';
-import 'package:planethero_application/providers/all_bookmarks.dart';
-import 'package:planethero_application/providers/all_users.dart';
-import 'package:planethero_application/screens/clicked_action_screen.dart';
-import 'package:planethero_application/screens/comments_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:planethero_application/services/bookmark_service.dart';
+import 'package:planethero_application/services/user_service.dart';
+import '../global/current_user_singleton.dart';
 
-import '../models/user.dart';
+class ListBookmarks extends StatefulWidget {
+  @override
+  State<ListBookmarks> createState() => _ListBookmarksState();
+}
 
-class ListBookmarks extends StatelessWidget {
+class _ListBookmarksState extends State<ListBookmarks> {
   @override
   Widget build(BuildContext context) {
-    //declare Bookmarks provider
-    AllBookmarks allBookmarks = Provider.of<AllBookmarks>(context);
+    //declare User service
+    UserService userService = UserService();
 
-    //declare User provider
-    AllUsers allUsers = Provider.of<AllUsers>(context);
+    //declare bookmark service
+    BookmarkService bookmarkService = BookmarkService();
 
-    //Get logged in user's username
-    String loggedUsername = allUsers.loggedInUserObject!.username;
+    // Access the currentUser from the singleton
+    final currentUser = CurrentUserSingleton().currentUser;
 
-    //Get logged user
-    UserObject? loggedUser = allUsers.loggedInUserObject;
-
-    //create a new list to store logged in user bookmarks only
-    List<Bookmark> userBookmarks = allBookmarks
-        .getBookmarks()
-        .where((bookmark) =>
-            bookmark.username ==
-            loggedUsername) //if the bookmark in list username = logged in user's username, add to new list
-        .toList();
+    int userPoints = currentUser.heroPoints;
 
     //method to remove Bookmark with alert dialog
-    void removeBookmark(int index, context) {
+    void removeBookmark(bid, context) {
       showDialog<Null>(
           context: context,
           builder: (context) {
@@ -49,12 +40,7 @@ class ListBookmarks extends StatelessWidget {
               actions: [
                 TextButton(
                     onPressed: () {
-                      if (index >= 0 && index < userBookmarks.length) {
-                        Bookmark bookmarkToRemove = userBookmarks[index];
-                        if (bookmarkToRemove.username == loggedUsername) {
-                          allBookmarks.removeBookmark(bookmarkToRemove);
-                        }
-                      }
+                      bookmarkService.removeBookmark(bid);
                       Navigator.of(context).pop();
                     },
                     child: const Text('Yes')),
@@ -69,7 +55,11 @@ class ListBookmarks extends StatelessWidget {
     }
 
     //function to add points
-    void addPoints(loggedUser, heroPoints, context) {
+    void addPoints(addedPoints) {
+      //variables below for adding points
+      String uid = currentUser.uid;
+      int actionsCompleted = currentUser.actionsCompleted += 1;
+
       showDialog<Null>(
           context: context,
           builder: (context) {
@@ -112,7 +102,11 @@ class ListBookmarks extends StatelessWidget {
                     ),
                     child: TextButton(
                         onPressed: () {
-                          allUsers.addPoints(loggedUser, heroPoints, context);
+                          setState(() {
+                            currentUser.heroPoints = addedPoints;
+                          });
+                          userService.addPoints(
+                              uid, addedPoints, actionsCompleted);
                           //show a snackbar of bookmark added successfully
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('Points Added!'),
@@ -129,145 +123,172 @@ class ListBookmarks extends StatelessWidget {
           });
     }
 
-    return ListView.separated(
-      itemBuilder: (ctx, i) {
-        Bookmark currentBookmark = userBookmarks[i];
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width - 70,
-              height: 130,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                    15), // Rounded corners for the container
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black
-                        .withOpacity(0.1), //Shadow color with opacity
-                    blurRadius: 20, //Amount of blur for the shadow
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(15), // Rounded corners for the image
-                child: Image.network(
-                  currentBookmark.imageUrl,
-                  fit: BoxFit
-                      .cover, // Scale the image to cover the entire container),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ), //Space between image and title
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                '${currentBookmark.actionTitle}',
-                style: TextStyle(
-                  fontFamily: 'Roboto Bold',
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ), //Space between title and next row
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left:
-                          12), //Give 12px of spacing from the left, aligning text under the title
-                  child: Text(
-                    'Hero Points',
-                    style: TextStyle(fontFamily: 'Roboto', fontSize: 10),
-                  ),
-                ),
-                Spacer(),
-                Text(
-                  'Claim Points',
-                  style: TextStyle(fontFamily: 'Roboto', fontSize: 10),
-                ),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 15),
-                  child: Text(
-                    'Remove from Bookmarks',
-                    style: TextStyle(fontFamily: 'Roboto', fontSize: 10),
-                  ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 12,
-                  ), //Give 12px of spacing from the left, aligning text under 'Hero Points'
-                  child: Text(
-                    '${currentBookmark.heroPoints}',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.greenAccent.shade700,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: currentBookmark.heroPoints.toString().length == 1
-                          ? 10
-                          : (currentBookmark.heroPoints.toString().length == 2)
-                              ? 4
-                              : 0),
-                  child: Container(
-                      height: 15, //set height of text button to be 15px
+    //Stream of bookmarks for particular user
+    Stream<List<Bookmark>> userBookmarkStream =
+        bookmarkService.getUserBookmarks(currentUser.uid);
+
+    return StreamBuilder<List<Bookmark>>(
+        stream: userBookmarkStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Bookmark> userBookmarks = snapshot.data!;
+            return ListView.separated(
+              itemBuilder: (ctx, i) {
+                Bookmark currentBookmark = userBookmarks[i];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width - 70,
+                      height: 130,
                       decoration: BoxDecoration(
-                        color: Colors.greenAccent.shade700.withOpacity(
-                            0.5), //setting background colour with reduced opacity
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.greenAccent.shade700),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                            15), // Rounded corners for the container
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black
+                                .withOpacity(0.1), //Shadow color with opacity
+                            blurRadius: 20, //Amount of blur for the shadow
+                            spreadRadius: 5,
+                          ),
+                        ],
                       ),
-                      child: TextButton(
-                          onPressed: () {
-                            addPoints(loggedUser, currentBookmark.heroPoints,
-                                context);
-                          },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            15), // Rounded corners for the image
+                        child: Image.network(
+                          currentBookmark.imageUrl,
+                          fit: BoxFit
+                              .cover, // Scale the image to cover the entire container),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ), //Space between image and title
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        '${currentBookmark.actionTitle}',
+                        style: TextStyle(
+                          fontFamily: 'Roboto Bold',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ), //Space between title and next row
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left:
+                                  12), //Give 12px of spacing from the left, aligning text under the title
                           child: Text(
-                            'Claim Now',
+                            'Hero Points',
+                            style:
+                                TextStyle(fontFamily: 'Roboto', fontSize: 10),
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          'Claim Points',
+                          style: TextStyle(fontFamily: 'Roboto', fontSize: 10),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: Text(
+                            'Remove from Bookmarks',
+                            style:
+                                TextStyle(fontFamily: 'Roboto', fontSize: 10),
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 12,
+                          ), //Give 12px of spacing from the left, aligning text under 'Hero Points'
+                          child: Text(
+                            '${currentBookmark.heroPoints}',
                             style: TextStyle(
-                                fontFamily: 'Roboto Bold',
-                                fontSize: 12,
-                                color: Colors.white),
-                          ))),
-                ),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 55),
-                  child: IconButton(
-                      onPressed: () {
-                        removeBookmark(i, context);
-                      },
-                      icon: Icon(Icons.bookmark_remove,
-                          size: 15, color: Colors.greenAccent.shade400)),
-                )
-              ],
-            )
-          ],
-        );
-      },
-      separatorBuilder: (ctx, i) {
-        return const Divider(
-          height: 20, //20px of space between the actions
-          color: Colors.transparent, //make it invisible
-        );
-      },
-      itemCount: userBookmarks.length,
-    );
+                                fontSize: 15,
+                                color: Colors.greenAccent.shade700,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: currentBookmark.heroPoints
+                                          .toString()
+                                          .length ==
+                                      1
+                                  ? 10
+                                  : (currentBookmark.heroPoints
+                                              .toString()
+                                              .length ==
+                                          2)
+                                      ? 4
+                                      : 0),
+                          child: Container(
+                              height: 15, //set height of text button to be 15px
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent.shade700.withOpacity(
+                                    0.5), //setting background colour with reduced opacity
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: Colors.greenAccent.shade700),
+                              ),
+                              child: TextButton(
+                                  onPressed: () {
+                                    addPoints(userPoints +=
+                                        currentBookmark.heroPoints);
+                                  },
+                                  child: Text(
+                                    'Claim Now',
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto Bold',
+                                        fontSize: 12,
+                                        color: Colors.white),
+                                  ))),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 55),
+                          child: IconButton(
+                              onPressed: () {
+                                removeBookmark(currentBookmark.bid, context);
+                              },
+                              icon: Icon(Icons.bookmark_remove,
+                                  size: 15,
+                                  color: Colors.greenAccent.shade400)),
+                        )
+                      ],
+                    )
+                  ],
+                );
+              },
+              separatorBuilder: (ctx, i) {
+                return const Divider(
+                  height: 20, //20px of space between the actions
+                  color: Colors.transparent, //make it invisible
+                );
+              },
+              itemCount: userBookmarks.length,
+            );
+          } else if (snapshot.hasError) {
+            //handle the error case
+            return Text('Error: ${snapshot.error}');
+          } else {
+            // Handle the loading state
+            return Center(child: const CircularProgressIndicator());
+          }
+        });
   }
 }

@@ -32,13 +32,17 @@ class AuthService {
   }
 
   //get current user
-  Future<UserObject> getCurrentUser() async {
+  Future<UserObject?> getCurrentUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     DocumentSnapshot userInfo = await FirebaseFirestore.instance
         .collection('users')
-        .doc(user!.uid)
+        .doc(user?.uid)
         .get();
 
-    return UserObject.fromJson(userInfo);
+    if (userInfo.exists) {
+      return UserObject.fromJson(userInfo);
+    } else {
+      return null;
+    }
   }
 }

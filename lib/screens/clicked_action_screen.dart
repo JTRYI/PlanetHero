@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:planethero_application/models/hero-action.dart';
-import 'package:planethero_application/providers/all_bookmarks.dart';
+import 'package:planethero_application/services/bookmark_service.dart';
+import 'package:planethero_application/services/user_service.dart';
 import 'package:provider/provider.dart';
-import '../models/user.dart';
+import '../global/current_user_singleton.dart';
 import '../providers/all_users.dart';
 import 'login_signup_screen.dart';
 
@@ -24,21 +26,25 @@ class _ClickedActionState extends State<ClickedAction> {
     HeroAction selectedAction =
         ModalRoute.of(context)?.settings.arguments as HeroAction;
 
-    //declare the bookmarks provider
-    AllBookmarks allBookmarks = Provider.of<AllBookmarks>(context);
-
     //declare the users provider
     AllUsers allUsers = Provider.of<AllUsers>(context);
 
-    //declare the variables
-    String username = allUsers.loggedInUserObject!
-        .username; //'!' means loggedInUser is non-null, allows me to access the username property of the non-null value.
+    //declare User Service
+    UserService userService = UserService();
+
+    //declare Bookmark Service
+    BookmarkService bookmarkService = BookmarkService();
+
+    final currentUser = CurrentUserSingleton()
+        .currentUser; // Access the currentUser from the singleton
+
+    //variables below for addToBookmark
     String imageUrl = selectedAction.imageUrl;
     String actionTitle = selectedAction.actionTitle;
     int heroPoints = selectedAction.heroPoints;
 
-    //create variable for logged in user
-    UserObject? loggedUser = allUsers.loggedInUserObject;
+    //variables below for adding points
+    String uid = currentUser.uid;
 
     //function to add to bookmarks
     void addToBookmark() {
@@ -57,8 +63,8 @@ class _ClickedActionState extends State<ClickedAction> {
               actions: [
                 TextButton(
                     onPressed: () {
-                      allBookmarks.addBookmark(
-                          username, imageUrl, actionTitle, heroPoints);
+                      bookmarkService.addToBookmarks(
+                          currentUser.uid, imageUrl, actionTitle, heroPoints);
                       //show a snackbar of bookmark added successfully
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Action added to Bookmarks!'),
@@ -77,7 +83,7 @@ class _ClickedActionState extends State<ClickedAction> {
     }
 
     //function to add points
-    void addPoints(loggedUser, heroPoints, context) {
+    void addPoints(addedPoints, actionsCompleted) {
       showDialog<Null>(
           context: context,
           builder: (context) {
@@ -120,7 +126,8 @@ class _ClickedActionState extends State<ClickedAction> {
                     ),
                     child: TextButton(
                         onPressed: () {
-                          allUsers.addPoints(loggedUser, heroPoints, context);
+                          userService.addPoints(
+                              uid, addedPoints, actionsCompleted);
                           //show a snackbar of bookmark added successfully
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('Points Added!'),
@@ -322,7 +329,10 @@ class _ClickedActionState extends State<ClickedAction> {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
-                              addPoints(loggedUser, heroPoints, context);
+                              addPoints(
+                                  currentUser.heroPoints +=
+                                      selectedAction.heroPoints,
+                                  currentUser.actionsCompleted += 1);
                             },
                             child: Container(
                               width: 45,

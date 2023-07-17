@@ -8,7 +8,7 @@ class CurrentUserSingleton {
   static final CurrentUserSingleton _singleton = CurrentUserSingleton._internal();
  
   // A property to store the current user information
-  UserObject? currentUser;
+  late UserObject currentUser;
   
   // Factory constructor to create an instance of the singleton class
   factory CurrentUserSingleton() {

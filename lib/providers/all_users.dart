@@ -1,90 +1,31 @@
 import 'package:flutter/material.dart';
-
+import 'package:planethero_application/services/user_service.dart';
 
 import '../models/user.dart';
 
 class AllUsers with ChangeNotifier {
-  //create list to store UserObjects and populate it
-  List<UserObject> allUserObjects = [
-    UserObject(
-        username: 'Tester',
-        email: 'tester@gmail.com',
-        password: 'password1',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 5,
-        heroPoints: 25, uid: ''),
-    UserObject(
-        username: 'Tester2',
-        email: 'tester2@gmail.com',
-        password: 'password2',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 10,
-        heroPoints: 100, uid: ''),
-    UserObject(
-        username: 'Tester3',
-        email: 'tester3@gmail.com',
-        password: 'password3',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 5,
-        heroPoints: 50, uid: ''),
-    UserObject(
-        username: 'Tester4',
-        email: 'tester4@gmail.com',
-        password: 'password4',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 1,
-        heroPoints: 100, uid: ''),
-    UserObject(
-        username: 'Tester5',
-        email: 'tester5@gmail.com',
-        password: 'password5',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 2,
-        heroPoints: 15, uid: ''),
-    UserObject(
-        username: 'Tester6',
-        email: 'tester6@gmail.com',
-        password: 'password6',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 2,
-        heroPoints: 105, uid: ''),
-    UserObject(
-        username: 'Tester7',
-        email: 'tester7@gmail.com',
-        password: 'password7',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 3,
-        heroPoints: 115, uid: ''),
-    UserObject(
-        username: 'Tester8',
-        email: 'tester8@gmail.com',
-        password: 'password8',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 1,
-        heroPoints: 100, uid: ''),
-    UserObject(
-        username: 'Tester9',
-        email: 'tester9@gmail.com',
-        password: 'password9',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 3,
-        heroPoints: 115, uid: ''),
-    UserObject(
-        username: 'Tester10',
-        email: 'tester10@gmail.com',
-        password: 'password10',
-        profilePic: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-        actionsCompleted: 1,
-        heroPoints: 100, uid: ''),
-  ];
+  //Initialise an empty list of users
+  List<UserObject> _users = [];
 
-  //Store the logged in UserObject
-  UserObject? loggedInUserObject;
+  List<UserObject> get users => [..._users]; // Return a copy of the users list
 
-  //function to get all UserObjects
-  List<UserObject> getUserObjects() {
-    return allUserObjects;
+  //declare User Service
+  final UserService userService = UserService();
+
+  Future<void> fetchTopUsers() async {
+    try {
+      List<UserObject> topUsers = await userService.getLeaderboard();
+
+      _users = topUsers; // Update the users list with the fetched data
+      notifyListeners(); // Notify the listeners that the state has changed
+    } catch (error) {
+      // Handle any errors that occurred during the fetch process
+      print('Error fetching top users: $error');
+    }
   }
+
+  // //Store the logged in UserObject
+  // UserObject? loggedInUserObject;
 
   // //function to print allUserObjects List
   // void printUserObjects() {
@@ -144,38 +85,38 @@ class AllUsers with ChangeNotifier {
   //   }
   // }
 
-  int getLoggedInUserObjectRanking() {
-    //create a copy of the allUserObjects list
-    List<UserObject> sortedUserObjects = List.from(allUserObjects);
-    
-    //sort the list based on hero points in descending order
-    sortedUserObjects.sort((a, b) => b.heroPoints.compareTo(a.heroPoints));
+  // int getLoggedInUserObjectRanking() {
+  //   //create a copy of the allUserObjects list
+  //   List<UserObject> sortedUserObjects = List.from(allUserObjects);
 
-    //find index of logged-in UserObject
-    int loggedInUserObjectIndex =
-        sortedUserObjects.indexWhere((UserObject) => UserObject == loggedInUserObject);
+  //   //sort the list based on hero points in descending order
+  //   sortedUserObjects.sort((a, b) => b.heroPoints.compareTo(a.heroPoints));
 
-    //Add 1 to the index to get ranking since lists start with index 0 and not 1
-    int ranking = loggedInUserObjectIndex + 1;
+  //   //find index of logged-in UserObject
+  //   int loggedInUserObjectIndex =
+  //       sortedUserObjects.indexWhere((UserObject) => UserObject == loggedInUserObject);
 
-    return ranking;
-  }
+  //   //Add 1 to the index to get ranking since lists start with index 0 and not 1
+  //   int ranking = loggedInUserObjectIndex + 1;
 
-  //create a leaderboard list in descending order
-  List<UserObject> getLeaderboard() {
-    //create a copy of the allUserObjects list
-    List<UserObject> sortedUserObjects = List.from(allUserObjects);
+  //   return ranking;
+  // }
 
-    //sort the list based on hero points in descending order
-    sortedUserObjects.sort((a, b) => b.heroPoints.compareTo(a.heroPoints));
+  // //create a leaderboard list in descending order
+  // List<UserObject> getLeaderboard() {
+  //   //create a copy of the allUserObjects list
+  //   List<UserObject> sortedUserObjects = List.from(allUserObjects);
 
-    return sortedUserObjects;
-  }
+  //   //sort the list based on hero points in descending order
+  //   sortedUserObjects.sort((a, b) => b.heroPoints.compareTo(a.heroPoints));
 
-  void addPoints(UserObject loggedInUserObject, int addedPoints, BuildContext context) {
-    loggedInUserObject.heroPoints += addedPoints;
-    loggedInUserObject.actionsCompleted += 1;
-    notifyListeners();
-  }
+  //   return sortedUserObjects;
+  // }
 
+  // void addPoints(
+  //     UserObject loggedInUserObject, int addedPoints, BuildContext context) {
+  //   loggedInUserObject.heroPoints += addedPoints;
+  //   loggedInUserObject.actionsCompleted += 1;
+  //   notifyListeners();
+  // }
 }

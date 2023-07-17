@@ -1,10 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:planethero_application/services/user_service.dart';
 
-class UpdatePasswordForm extends StatelessWidget {
+import '../global/current_user_singleton.dart';
+
+class UpdatePasswordForm extends StatefulWidget {
+  @override
+  State<UpdatePasswordForm> createState() => _UpdatePasswordFormState();
+}
+
+class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
+  //Texts for password form
+  TextEditingController currentPasswordController = TextEditingController();
+  TextEditingController newPassswordController = TextEditingController();
+  TextEditingController confirmNewPassswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose of the controller objects
+
+    currentPasswordController
+        .dispose(); // Dispose the current password text field controller
+    newPassswordController
+        .dispose(); // Dispose the new password text field controller
+    confirmNewPassswordController
+        .dispose(); // Dispose the confirm new password text field controller
+
+    super.dispose(); // Call the super class's dispose method
+  }
+
   @override
   Widget build(BuildContext context) {
     //declare the form state
     var passwordForm = GlobalKey<FormState>();
+
+    // Access the currentUser from the singleton
+    final currentUser = CurrentUserSingleton().currentUser;
 
     OutlineInputBorder enabledBorder = OutlineInputBorder(
       borderSide: BorderSide(color: Colors.greenAccent.shade700),
@@ -22,6 +52,48 @@ class UpdatePasswordForm extends StatelessWidget {
     );
 
     OutlineInputBorder currentBorder = enabledBorder;
+
+    void updatePassword() {
+      bool isValid = passwordForm.currentState!.validate();
+
+      String currentPassword = currentPasswordController.text;
+      String newPassword = newPassswordController.text;
+      String confirmNewPassword = confirmNewPassswordController.text;
+
+      // Declare user service
+      UserService userService = UserService();
+
+      if (isValid) {
+        if (newPassword == confirmNewPassword) {
+          userService
+              .changePassword(
+            email: currentUser.email,
+            oldPassword: currentPassword,
+            newPassword: newPassword,
+          )
+              .then((value) {
+            passwordForm.currentState!.reset();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Password updated successfully!'),
+              ),
+            );
+          }).catchError((error) {
+            String message = error.toString();
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(message)));
+          });
+        } else {
+          // Show a snackbar if new password and confirm new password do not match
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Passwords do not match!'),
+            ),
+          );
+        }
+      }
+    }
 
     return Container(
       width: MediaQuery.of(context).size.width - 70,
@@ -61,9 +133,9 @@ class UpdatePasswordForm extends StatelessWidget {
                     height: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      
                     ),
                     child: TextFormField(
+                      controller: currentPasswordController,
                       style: TextStyle(fontFamily: 'Roboto', fontSize: 12),
                       decoration: InputDecoration(
                         border: enabledBorder,
@@ -71,6 +143,13 @@ class UpdatePasswordForm extends StatelessWidget {
                         focusedBorder: focusedBorder,
                         errorBorder: errorBorder,
                       ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "Please enter a password.";
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                   ),
                   SizedBox(
@@ -88,9 +167,9 @@ class UpdatePasswordForm extends StatelessWidget {
                     height: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      
                     ),
                     child: TextFormField(
+                      controller: newPassswordController,
                       style: TextStyle(fontFamily: 'Roboto', fontSize: 12),
                       decoration: InputDecoration(
                         border: enabledBorder,
@@ -100,12 +179,11 @@ class UpdatePasswordForm extends StatelessWidget {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Please enter a email.";
+                          return "Please enter a password.";
                         } else {
                           return null;
                         }
                       },
-                      onSaved: (value) {},
                     ),
                   ),
                   SizedBox(
@@ -123,9 +201,9 @@ class UpdatePasswordForm extends StatelessWidget {
                     height: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      
                     ),
                     child: TextFormField(
+                      controller: confirmNewPassswordController,
                       style: TextStyle(fontFamily: 'Roboto', fontSize: 12),
                       decoration: InputDecoration(
                         border: enabledBorder,
@@ -133,6 +211,13 @@ class UpdatePasswordForm extends StatelessWidget {
                         focusedBorder: focusedBorder,
                         errorBorder: errorBorder,
                       ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "Please enter a password.";
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                   ),
                   SizedBox(
@@ -151,7 +236,9 @@ class UpdatePasswordForm extends StatelessWidget {
                                 Border.all(color: Colors.greenAccent.shade700),
                           ),
                           child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                updatePassword();
+                              },
                               child: Text(
                                 'Submit',
                                 style: TextStyle(

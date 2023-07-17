@@ -8,10 +8,15 @@ import '../services/auth_service.dart';
 Color background =
     Color(int.parse(hexColor.substring(1, 7), radix: 16) + 0xFF000000);
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   //declare route name
   static String routeName = '/settings';
 
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
   AuthService authService = AuthService();
 
   //function to logout
@@ -50,7 +55,7 @@ class SettingScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(
                           right:
-                              95), //95px of spacing between 'Hero Settings' text and logout button
+                              40), //40px of spacing between 'Hero Settings' text and logout button
                       child: Text(
                         'Hero Settings',
                         style:
@@ -58,7 +63,7 @@ class SettingScreen extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        height: 20,
+                        height: 35,
                         decoration: BoxDecoration(
                             color: Colors.red.withOpacity(
                                 0.5), //setting background colour with reduced opacity
@@ -72,6 +77,7 @@ class SettingScreen extends StatelessWidget {
                               'Logout',
                               style: TextStyle(
                                   fontFamily: 'Roboto Bold',
+                                  fontSize: 12,
                                   color: Colors.white),
                             ))),
                   ],

@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +23,7 @@ class UserObject {
 
   factory UserObject.fromJson(DocumentSnapshot snapshot) {
     return UserObject(
-      uid: snapshot['uid'] ?? '',
+      uid: snapshot.id,
       username: snapshot['username'] ?? '',
       email: snapshot['email'] ?? '',
       password: snapshot['password'] ?? '',
