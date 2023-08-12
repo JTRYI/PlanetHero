@@ -44,6 +44,7 @@ dependencies:
   image_picker: ^0.8.7
   path: ^1.8.2
   flutter_launcher_icons: ^0.12.0
+  flutter_native_splash: ^2.2.19
 
 flutter_icons:
   android: true
@@ -51,6 +52,12 @@ flutter_icons:
   image_path: "images/App-Icon.png"
   adaptive_icon_background: "#000000"
   adaptive_icon_foreground: "images/App-Icon.png"
+
+flutter_native_splash:
+  android: true
+  ios: false
+  image: "images/Splash-Screen.png"
+  color: "#FFFFFF"
   
 dev_dependencies:
   flutter_test:
@@ -84,6 +91,7 @@ flutter:
     - images/browse-actions-img.jpg
     - images/library.jpg
     - images/App-Icon.png
+    - images/Splash-Screen.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
