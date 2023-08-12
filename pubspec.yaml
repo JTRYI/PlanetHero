@@ -46,6 +46,7 @@ dependencies:
   flutter_launcher_icons: ^0.12.0
   flutter_native_splash: ^2.2.19
   google_sign_in: ^6.1.4
+  http: ^0.13.6
 
 flutter_icons:
   android: true
@@ -90,7 +91,7 @@ flutter:
     - images/Hero.png
     - images/leaderboard.png
     - images/browse-actions-img.jpg
-    - images/library.jpg
+    - images/sustainable-news.jpeg
     - images/App-Icon.png
     - images/Splash-Screen.png
   

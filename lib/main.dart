@@ -10,6 +10,7 @@ import 'package:planethero_application/screens/clicked_action_screen.dart';
 import 'package:planethero_application/screens/comments_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
+import 'package:planethero_application/screens/news_screen.dart';
 import 'package:planethero_application/screens/parent_screen.dart';
 import 'package:planethero_application/screens/reset_password_screen.dart';
 import 'package:planethero_application/screens/settings_screen.dart';
@@ -104,6 +105,9 @@ class MyApp extends StatelessWidget {
                         },
                         ResetPasswordScreen.routeName: (_) {
                           return ResetPasswordScreen();
+                        },
+                        NewsScreen.routeName: (_) {
+                          return NewsScreen();
                         }
                       });
                 }),
@@ -263,7 +267,7 @@ class MainScreen extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Text(
-                              "Bookmarks",
+                              "Sustainability News!",
                               style: TextStyle(
                                 fontFamily: 'Roboto Bold',
                                 fontSize: 20,
@@ -275,30 +279,36 @@ class MainScreen extends StatelessWidget {
                             //Leave 15 px of space between the Text and Library Image
                             height: 15,
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width - 70,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(
-                                  15), // Rounded corners for the container
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(
-                                      0.1), //Shadow color with opacity
-                                  blurRadius:
-                                      20, //Amount of blur for the shadow
-                                  spreadRadius: 5,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(NewsScreen.routeName);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 70,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                    15), // Rounded corners for the container
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(
+                                        0.1), //Shadow color with opacity
+                                    blurRadius:
+                                        20, //Amount of blur for the shadow
+                                    spreadRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    15), // Rounded corners for the image
+                                child: Image.asset(
+                                  'images/sustainable-news.jpeg',
+                                  fit: BoxFit
+                                      .cover, // Scale the image to cover the entire container
                                 ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  15), // Rounded corners for the image
-                              child: Image.asset(
-                                'images/library.jpg',
-                                fit: BoxFit
-                                    .cover, // Scale the image to cover the entire container
                               ),
                             ),
                           ),
