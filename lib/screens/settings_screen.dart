@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:planethero_application/screens/login_signup_screen.dart';
 import 'package:planethero_application/widgets/update-password-form.dart';
 import 'package:planethero_application/widgets/update-user-form.dart';
@@ -71,6 +72,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             border: Border.all(color: Colors.red)),
                         child: TextButton(
                             onPressed: () {
+                              GoogleSignIn().signOut();
                               logOut(context);
                             },
                             child: Text(

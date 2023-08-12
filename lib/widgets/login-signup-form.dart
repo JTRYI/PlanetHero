@@ -2,12 +2,14 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:planethero_application/screens/reset_password_screen.dart';
 import 'package:planethero_application/services/auth_service.dart';
 import 'package:planethero_application/widgets/logo-image.dart';
-
 
 //function to generate a random username for user when register complete
 String generateRandomUsername() {
@@ -50,6 +52,8 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
 
   //form key for login form
   var formLoginKey = GlobalKey<FormState>();
+
+  GoogleSignIn googleSignIn = GoogleSignIn();
 
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
@@ -133,6 +137,54 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(message)));
       });
+    }
+  }
+
+  Future<void> googleSignInFunction() async {
+    try {
+      String randomUsername = generateRandomUsername();
+      String profilePic =
+          'https://cdn-icons-png.flaticon.com/128/9797/9797462.png';
+      int actionsCompleted = 0;
+      int heroPoints = 0;
+
+      // user picked google sign in
+      GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        print('Google sign-in was canceled by the user.');
+        return;
+      }
+
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      DocumentSnapshot userExist = await fireStore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      // if user already in users collection, do nothing
+      if (userExist.exists) {
+      }
+
+      // if user not in collection, add user to collection
+      else {
+        await fireStore.collection('users').doc(userCredential.user!.uid).set({
+          'uid': userCredential.user!.uid,
+          'username': randomUsername,
+          'email': userCredential.user!.email,
+          'password': 'googleSignedIn',
+          'profilePic': profilePic,
+          'actionsCompleted': actionsCompleted,
+          'heroPoints': heroPoints,
+        });
+      }
+    } catch (error) {
+      print('Error during Google sign-in: $error');
     }
   }
 
@@ -261,7 +313,7 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
           buildBottomHalfContainer(false),
           // Or Sign Up With Section
           Positioned(
-              top: MediaQuery.of(context).size.height - 70,
+              top: MediaQuery.of(context).size.height - 100,
               right: 0,
               left: 0,
               child: Column(
@@ -279,9 +331,9 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         buildTextButton(MdiIcons.facebook, "Facebook",
-                            Colors.blue.shade900),
-                        buildTextButton(
-                            MdiIcons.googlePlus, "Google", Colors.red.shade700),
+                            Colors.blue.shade900, null),
+                        buildTextButton(MdiIcons.googlePlus, "Google",
+                            Colors.red.shade700, googleSignInFunction),
                       ],
                     ),
                   )
@@ -400,10 +452,10 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
   }
 
 //Facebook and Google button method, its like a object, change the parameters to show what u want.
-  TextButton buildTextButton(
-      IconData icon, String title, Color backgroundColor) {
+  TextButton buildTextButton(IconData icon, String title, Color backgroundColor,
+      Future<void> Function()? onPressed) {
     return TextButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: TextButton.styleFrom(
             side: BorderSide(width: 1, color: Colors.grey),
             minimumSize: Size(145, 40),
