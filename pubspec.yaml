@@ -43,6 +43,14 @@ dependencies:
   firebase_storage: ^11.0.15
   image_picker: ^0.8.7
   path: ^1.8.2
+  flutter_launcher_icons: ^0.12.0
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "images/App-Icon.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "images/App-Icon.png"
   
 dev_dependencies:
   flutter_test:
@@ -75,6 +83,7 @@ flutter:
     - images/leaderboard.png
     - images/browse-actions-img.jpg
     - images/library.jpg
+    - images/App-Icon.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

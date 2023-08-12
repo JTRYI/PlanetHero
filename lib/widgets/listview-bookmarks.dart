@@ -229,15 +229,15 @@ class _ListBookmarksState extends State<ListBookmarks> {
                                           .toString()
                                           .length ==
                                       1
-                                  ? 10
+                                  ? 20
                                   : (currentBookmark.heroPoints
                                               .toString()
                                               .length ==
                                           2)
-                                      ? 4
-                                      : 0),
+                                      ? 15
+                                      : 2),
                           child: Container(
-                              height: 15, //set height of text button to be 15px
+                              height: 30, //set height of text button to be 15px
                               decoration: BoxDecoration(
                                 color: Colors.greenAccent.shade700.withOpacity(
                                     0.5), //setting background colour with reduced opacity

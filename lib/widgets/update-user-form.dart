@@ -53,9 +53,12 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
     UploadTask uploadTask = ref.putFile(profilePicture!);
 
     var imageUrl = await (await uploadTask).ref.getDownloadURL();
-    setState(() {
+    
       base64 = imageUrl.toString();
-    });
+      // Call the method from the singleton to update the profile picture URL
+      CurrentUserSingleton().updateProfilePictureUrl(base64);
+    
+
     await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser.uid)

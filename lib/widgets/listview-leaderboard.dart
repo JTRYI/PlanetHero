@@ -36,6 +36,7 @@ class _ListLeaderboardState extends State<ListLeaderboard> {
             child: CircularProgressIndicator(),
           )
         : ListView.separated(
+            padding: EdgeInsets.all(0), // Set padding to zero, default padding leaves alot of space before starting the first row
             itemBuilder: (ctx, i) {
               //create the current user variable
               UserObject currentUser = topUsers[i];
@@ -61,7 +62,7 @@ class _ListLeaderboardState extends State<ListLeaderboard> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 60),
+                      padding: const EdgeInsets.only(left: 45),
                       child: Text(
                         ranking.toString(), //display ranking as text
                         style: TextStyle(
@@ -72,8 +73,8 @@ class _ListLeaderboardState extends State<ListLeaderboard> {
                     ),
                     SizedBox(
                         width: ranking.toString().length == 1
-                            ? 75 //If ranking is 1 digit, return sizedbox of width 75 for spacing between ranking and circle avater
-                            : 69), //else if ranking is 2 digit or more, return sizedbox of width 70 for spacing between ranking and circle avatar
+                            ? 60 //If ranking is 1 digit, return sizedbox of width 60 for spacing between ranking and circle avater
+                            : 50), //else if ranking is 2 digit or more, return sizedbox of width 50 for spacing between ranking and circle avatar
 
                     CircleAvatar(
                       backgroundImage:
@@ -91,7 +92,7 @@ class _ListLeaderboardState extends State<ListLeaderboard> {
                     Spacer(), //space out username and hero points
                     Padding(
                       padding: const EdgeInsets.only(
-                          right: 48), //shift heropoints 48px from the right
+                          right: 35), //shift heropoints 35px from the right
                       child: Text(
                         '${currentUser.heroPoints.toString()}',
                         style:

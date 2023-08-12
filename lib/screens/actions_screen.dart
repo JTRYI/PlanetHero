@@ -197,6 +197,8 @@ greenhouse gases released into the atmosphere.'''),
               ),
               Expanded(
                   child: ListView.separated(
+                padding: EdgeInsets.all(
+                    0), // Set padding to zero, default padding leaves alot of space before starting the first row
                 itemBuilder: (ctx, i) {
                   HeroAction currentAction = displayList[i];
                   return GestureDetector(

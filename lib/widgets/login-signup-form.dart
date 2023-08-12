@@ -4,11 +4,10 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:planethero_application/screens/reset_password_screen.dart';
 import 'package:planethero_application/services/auth_service.dart';
 import 'package:planethero_application/widgets/logo-image.dart';
-import 'package:provider/provider.dart';
-import '../providers/all_users.dart';
-import '../screens/parent_screen.dart';
+
 
 //function to generate a random username for user when register complete
 String generateRandomUsername() {
@@ -60,7 +59,8 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
     String password = passwordController.text;
     String confirmPassword = confirmPasswordController.text;
     String randomUsername = generateRandomUsername();
-    String profilePic = 'https://cdn-icons-png.flaticon.com/128/9797/9797462.png';
+    String profilePic =
+        'https://cdn-icons-png.flaticon.com/128/9797/9797462.png';
     int actionsCompleted = 0;
     int heroPoints = 0;
 
@@ -153,9 +153,6 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
   }
 
   Widget build(BuildContext context) {
-    //declare the user provider
-    AllUsers usersList = Provider.of<AllUsers>(context);
-
     return Scaffold(
       body: Stack(
         children: [
@@ -343,7 +340,10 @@ class _LoginSignupFormState extends State<LoginSignupForm> {
                   ],
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(ResetPasswordScreen.routeName);
+                    },
                     child: Text(
                       "Forgot Password?",
                       style: TextStyle(

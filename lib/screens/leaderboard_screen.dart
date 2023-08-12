@@ -63,7 +63,7 @@ class LeaderboardScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(
                           right:
-                              150), //Move 'User' text 150px from 'Point' Text
+                              120), //Move 'User' text 150px from 'Point' Text
                       child: Text(
                         'User',
                         style:

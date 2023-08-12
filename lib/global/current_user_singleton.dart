@@ -16,6 +16,12 @@ class CurrentUserSingleton {
     return _singleton;
   }
 
+  // Method to update the profile picture URL in the singleton
+  void updateProfilePictureUrl(String url) {
+    currentUser.profilePic = url;
+  }
+
   // Private constructor that can only be called from within the class
   CurrentUserSingleton._internal();
+
 }
