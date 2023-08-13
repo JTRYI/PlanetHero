@@ -1,12 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:planethero_application/constant.dart';
 import 'package:http/http.dart' as http;
 import '../models/chat-message.dart';
 
 const backgroundColor = Color(0xFF028C5D);
 const botBackgroundColor = Color(0xFF00B87C);
+
+FlutterTts ftts = FlutterTts();
 
 class ChatbotScreen extends StatefulWidget {
   //declare route name
@@ -49,17 +51,17 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     Map<String, dynamic> newResponse = jsonDecode(response.body);
     // Check if 'choices' is not null and is an array
     if (newResponse['choices'] != null && newResponse['choices'] is List) {
-        List<dynamic> choices = newResponse['choices'];
-        
-        // Check if there are elements in the choices array
-        if (choices.isNotEmpty) {
-            String generatedText = choices[0]['text'];
-            
-            // Remove leading whitespace characters
-            generatedText = generatedText.trim();
-            
-            return generatedText;
-        }
+      List<dynamic> choices = newResponse['choices'];
+
+      // Check if there are elements in the choices array
+      if (choices.isNotEmpty) {
+        String generatedText = choices[0]['text'];
+
+        // Remove leading whitespace characters
+        generatedText = generatedText.trim();
+
+        return generatedText;
+      }
     }
 
     // Return a default response or handle the error scenario
@@ -198,8 +200,9 @@ class ChatMessageWidget extends StatelessWidget {
                 margin: EdgeInsets.only(right: 16),
                 child: CircleAvatar(
                   backgroundColor: Colors.red,
-                  child: Transform.scale( //make avatar png smaller inside Circle Avatar widget
-                    scale: 0.7,  
+                  child: Transform.scale(
+                    //make avatar png smaller inside Circle Avatar widget
+                    scale: 0.7,
                     child: Image.asset(
                       'images/chatbot-avatar.png',
                     ),
@@ -230,7 +233,26 @@ class ChatMessageWidget extends StatelessWidget {
               ),
             )
           ],
-        ))
+        )),
+        chatMessageType == ChatMessageType.bot
+            ? GestureDetector(
+                onTap: () async {
+                  await ftts.setLanguage("en-US");
+                  await ftts.setSpeechRate(0.5); //speed of speech
+                  await ftts.setVolume(1.0); //volume of speech
+                  await ftts.setPitch(1); //pitc of sound
+
+                  //play text to sp
+                  var result =
+                      await ftts.speak(text);
+                  if (result == 1) {
+                    //speaking
+                  } else {
+                    //not speaking
+                  }
+                },
+                child: const Icon(Icons.volume_up))
+            : Container(width: 0, height: 0),
       ]),
     );
   }
