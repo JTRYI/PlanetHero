@@ -68,40 +68,37 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 100,
-          title: Text(
-            "Hero Chatbot",
-            style: TextStyle(fontFamily: 'Roboto Bold'),
-          ),
-          backgroundColor: botBackgroundColor,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Hero Chatbot",
+          style: TextStyle(fontFamily: 'Roboto Bold'),
         ),
-        backgroundColor: backgroundColor,
-        body: Column(
-          children: [
-            //chat body
-            Expanded(child: _buildChat()),
-            Visibility(
-                visible: isLoading,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                )),
-            Row(
-              children: [
-                //input field
-                _buildChatInput(),
+        backgroundColor: botBackgroundColor,
+      ),
+      backgroundColor: backgroundColor,
+      body: Column(
+        children: [
+          //chat body
+          Expanded(child: _buildChat()),
+          Visibility(
+              visible: isLoading,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              )),
+          Row(
+            children: [
+              //input field
+              _buildChatInput(),
 
-                //submit button
-                _buildChatSubmit(),
-              ],
-            )
-          ],
-        ),
+              //submit button
+              _buildChatSubmit(),
+            ],
+          )
+        ],
       ),
     );
   }

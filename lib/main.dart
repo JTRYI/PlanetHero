@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:planethero_application/firebase_options.dart';
+import 'package:planethero_application/helper/notif_helper.dart';
 import 'package:planethero_application/models/user.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/actions_screen.dart';
@@ -28,6 +29,8 @@ void main() async {
   ).then((value) {
     runApp(MyApp());
   });
+
+  NotifHelper.initNotif();
 }
 
 Color background =
@@ -205,7 +208,6 @@ class MainScreen extends StatelessWidget {
                                 fontSize: 20,
                                 color: Colors.black,
                               ),
-                              
                             ),
                           ),
 

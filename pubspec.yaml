@@ -47,6 +47,7 @@ dependencies:
   flutter_native_splash: ^2.2.19
   google_sign_in: ^6.1.4
   http: ^0.13.6
+  onesignal_flutter: ^3.5.1
 
 flutter_icons:
   android: true

@@ -53,7 +53,7 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
 
     OutlineInputBorder currentBorder = enabledBorder;
 
-    void updatePassword() {
+    void updatePassword() async{
       bool isValid = passwordForm.currentState!.validate();
 
       String currentPassword = currentPasswordController.text;
@@ -64,33 +64,42 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
       UserService userService = UserService();
 
       if (isValid) {
-        if (newPassword == confirmNewPassword) {
-          userService
-              .changePassword(
-            email: currentUser.email,
-            oldPassword: currentPassword,
-            newPassword: newPassword,
-          )
-              .then((value) {
+        try {
+          if (newPassword == confirmNewPassword) {
+            await userService.changePassword(
+              email: currentUser.email,
+              oldPassword: currentPassword,
+              newPassword: newPassword,
+            );
+
             passwordForm.currentState!.reset();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Password updated successfully!'),
               ),
             );
-          }).catchError((error) {
-            String message = error.toString();
+          } else {
+            // Show a snackbar if new password and confirm new password do not match
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Passwords do not match!'),
+              ),
+            );
+          }
+        } catch (error) {
+          String message = error.toString();
+          if (message.contains('wrong-password')) {
+            // Show a snackbar when the current password is incorrect
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Incorrect current password.'),
+              ),
+            );
+          } else {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(message)));
-          });
-        } else {
-          // Show a snackbar if new password and confirm new password do not match
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Passwords do not match!'),
-            ),
-          );
+          }
         }
       }
     }

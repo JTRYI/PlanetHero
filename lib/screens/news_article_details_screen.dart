@@ -13,7 +13,7 @@ class ArticleDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(article.title),
+        title: Text(article.title, style: TextStyle(fontFamily: 'Roboto Bold'),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

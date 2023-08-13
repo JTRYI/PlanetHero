@@ -12,7 +12,7 @@ class NewsApiService {
   // add enpoint url, check NewsAPI website documentation
 
   final endPointUrl =
-      "https://newsapi.org/v2/everything?qInTitle=sustainability&from=2023-07-12&sortBy=publishedAt&apiKey=a9fb73f443d443c4ae0dbca77bb19298";
+      "https://newsapi.org/v2/everything?qInTitle=sustainability&from=2023-07-13&sortBy=publishedAt&apiKey=a9fb73f443d443c4ae0dbca77bb19298";
 
   //create http request function
   Future<List<Article>> getArticle() async {
