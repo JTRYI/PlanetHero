@@ -6,6 +6,7 @@ import 'package:planethero_application/models/user.dart';
 import 'package:planethero_application/providers/all_users.dart';
 import 'package:planethero_application/screens/actions_screen.dart';
 import 'package:planethero_application/screens/bookmarks_screen.dart';
+import 'package:planethero_application/screens/chatbot_screen.dart';
 import 'package:planethero_application/screens/clicked_action_screen.dart';
 import 'package:planethero_application/screens/comments_screen.dart';
 import 'package:planethero_application/screens/leaderboard_screen.dart';
@@ -108,6 +109,9 @@ class MyApp extends StatelessWidget {
                         },
                         NewsScreen.routeName: (_) {
                           return NewsScreen();
+                        },
+                        ChatbotScreen.routeName: (_) {
+                          return ChatbotScreen();
                         }
                       });
                 }),
@@ -195,12 +199,13 @@ class MainScreen extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Text(
-                              "Browse Actions",
+                              "Herobot",
                               style: TextStyle(
                                 fontFamily: 'Roboto Bold',
                                 fontSize: 20,
                                 color: Colors.black,
                               ),
+                              
                             ),
                           ),
 
@@ -210,9 +215,8 @@ class MainScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(
-                              //         builder: (_) => ActionScreen()));
+                              Navigator.of(context)
+                                  .pushNamed(ChatbotScreen.routeName);
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width -
@@ -239,22 +243,9 @@ class MainScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(
                                         15), // Rounded corners for the image
                                     child: Image.asset(
-                                      'images/browse-actions-img.jpg',
+                                      'images/chatbot.jpg',
                                       fit: BoxFit
                                           .cover, // Scale the image to cover the entire container
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 30,
-                                        left:
-                                            15), //Move text 30px from top of container and 15px from left
-                                    child: Text(
-                                      'Start Now!',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                          fontFamily: 'Roboto Bold'),
                                     ),
                                   ),
                                 ],

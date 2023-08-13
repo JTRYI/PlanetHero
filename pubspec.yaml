@@ -94,6 +94,8 @@ flutter:
     - images/sustainable-news.jpeg
     - images/App-Icon.png
     - images/Splash-Screen.png
+    - images/chatbot.jpg
+    - images/chatbot-avatar.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
