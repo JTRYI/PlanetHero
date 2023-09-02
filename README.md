@@ -5,7 +5,7 @@ TP Year 2 Sem 1 Project for MBAP Module
 
 Sustainability Application Built Using Flutter Framework with Firebase as the Backend
 
-# Features
+## Features
   - User Authentication with Firebase Authentication
   - Display List of Sustainable Actions
   - Display User Statistics (Points, Leaderboard Ranking, Actions Completed)
@@ -21,7 +21,7 @@ Sustainability Application Built Using Flutter Framework with Firebase as the Ba
   - App Icon
   - Splash Screen
 
-# Future Enhancements
+## Future Enhancements
   - Community Groups
   - Offline Mode
 
